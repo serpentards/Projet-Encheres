@@ -61,7 +61,7 @@
 		<input type="text" id="ville" name="ville" maxlength="30" /> <br />
 		 
 		<input type="submit" value="Créer" /> 
-		<input type="button" value="Annuler" onclick="location.href='<%request.getContextPath();%>/Accueil'">
+		<input type="button" value="Annuler" onclick="location.href='<%=request.getContextPath()%>/Accueil'">
 	</form>
 </body>
 </html>
