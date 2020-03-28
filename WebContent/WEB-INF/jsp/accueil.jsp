@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Acceuil</title>
+<title>Accueil</title>
 </head>
 <body>
 	<c:choose>
