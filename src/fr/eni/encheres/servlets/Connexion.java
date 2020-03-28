@@ -28,7 +28,7 @@ public class Connexion extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		RequestDispatcher rd = request.getRequestDispatcher("WEB-INF/jsp/Connexion.jsp");
+		RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/jsp/connexion.jsp");
 		rd.forward(request, response);
 	}
 
@@ -42,16 +42,19 @@ public class Connexion extends HttpServlet {
 		List<Integer> listeCodesErreur=new ArrayList<>();
 		
 		UtilisateurManager utilisateurManager = new UtilisateurManager();
+		
 		try {
 			Utilisateur utilisateur = utilisateurManager.selectionnerUtilisateurAvecEmail(email);
+			
 			if (utilisateur == null) {
 				utilisateur = utilisateurManager.selectionnerUtilisateurAvecPseudo(email);
 				if (utilisateur == null) {
-					listeCodesErreur.add(CodesResultatServlets.EMAIL_NEXISTE_PAS);
+					listeCodesErreur.add(CodesResultatServlets.LOGIN_NEXISTE_PAS);
 				}else if (!utilisateur.getMot_de_passe().equals(mot_de_passe)) {
 					listeCodesErreur.add(CodesResultatServlets.MDP_DIFFERENT);
 				}
 			}else if (!utilisateur.getMot_de_passe().equals(mot_de_passe)) {
+				
 				listeCodesErreur.add(CodesResultatServlets.MDP_DIFFERENT);
 			}
 			
@@ -61,7 +64,7 @@ public class Connexion extends HttpServlet {
 				//Je renvoie les codes d'erreurs
 				request.setAttribute("listeCodesErreur",listeCodesErreur);
 				request.getSession().setAttribute( "sessionUtilisateur", null );
-				RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/jsp/Connexion.jsp");
+				RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/jsp/connexion.jsp");
 				rd.forward(request, response);
 			}
 			else {
@@ -69,7 +72,7 @@ public class Connexion extends HttpServlet {
 				/* Récupération de la session depuis la requête */
 		        request.getSession().setAttribute( "sessionUtilisateur", utilisateur );
 				//Si tout se passe bien, je vais vers la page de connection:
-				RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/jsp/Acceuil.jsp");
+				RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/jsp/accueil.jsp");
 				rd.forward(request, response);
 			}
 		} catch (BusinessException e) {

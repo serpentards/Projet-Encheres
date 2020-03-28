@@ -14,12 +14,12 @@ public abstract class CodesResultatDAL {
 	
 	public static final int DELETE_OBJET_ECHEC = 10002;
 	
-	public static final int SELECT_ALL_ECHEC = 10003;
+	public static final int SELECT_ID_ECHEC = 10003;
 	
-	public static final int SELECT_ID_ECHEC = 10004;
-	
-	public static final int SELECT_EMAIL_ECHEC = 10005;
+	public static final int SELECT_EMAIL_ECHEC = 10004;
 
-	public static final int SELECT_PSEUDO_ECHEC = 10006;
+	public static final int SELECT_PSEUDO_ECHEC = 10005;
+
+	public static final int SELECT_ALL_CATEGORIE_ECHEC = 10006;
 
 }

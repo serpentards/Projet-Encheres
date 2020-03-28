@@ -1,6 +1,5 @@
 <%@page import="java.util.List"%>
 <%@page import="fr.eni.encheres.messages.LecteurMessage"%>
-<%@ page pageEncoding="UTF-8"%>
 
 <!DOCTYPE html>
 <html>
@@ -29,21 +28,23 @@
 	<%
 		}
 	%>
+	<h1 class="h3 mb-3 font-weight-normal">Connectez-vous</h1>
 	<form method="post" action="<%=request.getContextPath()%>/Connexion">
 
-		<label for="nom">Identifiant : </label>
-		<input type="text" id="email" name="email" value="" /> <br /> 
+		<label for="email">Adresse Email ou Pseudo : </label>
+		<input type="text" id="email" name="email" placeholder="Adresse Email ou Pseudo"/> <br /> 
 		<label for="motdepasse">Mot	de passe : </label>
-		<input type="password" id="motdepasse" name="motdepasse" value="" /> <br />
+		<input type="password" id="motdepasse" name="motdepasse" placeholder="Mot De Passe"/> <br />
 		<input type="submit" value="Connexion"/> <br />
 		<input type="checkbox" name="souvenir">Se souvenir de moi<br>
-		<a href="">Mot de passe oubliÃ©</a>
+		<a href="">Mot de passe oublié</a>
 	</form>
 	
 	<div class="contenu">
         <a href="<%=request.getContextPath()%>/Inscription"><input
             type="button" class="btn btn-primary"
-            value="Inscription" /></a>
+            value="Créer un Compte" /></a>
     </div>
+    <p class="mt-5 mb-3 text-muted">© BollobArt</p>
 </body>
 </html>

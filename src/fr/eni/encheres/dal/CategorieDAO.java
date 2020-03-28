@@ -6,7 +6,8 @@ import fr.eni.encheres.bo.Categorie;
 import fr.eni.encheres.exception.BusinessException;
 
 public interface CategorieDAO {
-	
+
 	List<Categorie> select() throws BusinessException;
 
+	Categorie selectById(int id) throws BusinessException;
 }

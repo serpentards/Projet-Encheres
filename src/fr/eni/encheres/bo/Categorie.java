@@ -1,17 +1,20 @@
 package fr.eni.encheres.bo;
 
 public class Categorie {
-
 	private int noCategorie;
 	private String libelle;
-
+	
 	public Categorie() {
-
+		// TODO Auto-generated constructor stub
 	}
 
 	public Categorie(int noCategorie, String libelle) {
 		super();
 		this.noCategorie = noCategorie;
+		this.libelle = libelle;
+	}
+	
+	public Categorie(String libelle) {
 		this.libelle = libelle;
 	}
 
@@ -61,7 +64,8 @@ public class Categorie {
 
 	@Override
 	public String toString() {
-		return "Categorie [noCategorie=" + noCategorie + ", libelle=" + libelle + "]";
+		return noCategorie + " " + libelle ;
 	}
+	
 
 }

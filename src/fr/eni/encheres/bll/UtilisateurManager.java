@@ -1,8 +1,10 @@
 package fr.eni.encheres.bll;
 
-import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import fr.eni.encheres.bo.Utilisateur;
+import fr.eni.encheres.dal.CodesResultatDAL;
 import fr.eni.encheres.dal.DAOFactory;
 import fr.eni.encheres.dal.UtilisateurDAO;
 import fr.eni.encheres.exception.BusinessException;
@@ -22,11 +24,11 @@ public class UtilisateurManager {
 		validerNom(nom, be);
 		validerPrenom(prenom, be);
 		validerEmail(email, be);
-		validerTelephone(telephone, be);
+		validerTel(telephone, be);
 		validerRue(rue, be);
-		validerCP(code_postal, be);
+		validerCp(code_postal, be);
 		validerVille(ville, be);
-		validerMDP(mot_de_passe, confirmation, be);
+		validerMdp(mot_de_passe, confirmation, be);
 		Utilisateur utilisateur = null;
 		if(!be.hasErreurs()) {
 			utilisateur = new Utilisateur(pseudo, nom, prenom, email, telephone, rue, code_postal, ville, mot_de_passe, credit, administrateur, null, null, null);
@@ -37,9 +39,40 @@ public class UtilisateurManager {
 		return utilisateur;
 	}
 	
-	public List<Utilisateur> selectionnerTousLesUtilisateurs() throws BusinessException{
-		return utilisateurDAO.select();
+	public void updateUtilisateur (Utilisateur u, String conf, String email)throws BusinessException {
+		BusinessException be = new BusinessException();
+		
+		//valider les champs
+		validerNom(u.getNom(), be);
+		validerPrenom(u.getPrenom(), be);
+		if (!u.getEmail().equalsIgnoreCase(email)) {
+			validerEmail(u.getEmail(), be);
+		}
+		validerTel(u.getTelephone(), be);
+		validerRue(u.getRue(), be);
+		validerCp(u.getCode_postal(), be);
+		validerVille(u.getVille(), be);
+		validerMdp(u.getMot_de_passe(), conf, be);
+		
+		if(!be.hasErreurs()) {
+			utilisateurDAO.update(u);
+		}else {
+			throw be;
+		}
 	}
+	
+	public void deleteUtilisateur(int id) throws BusinessException{
+		BusinessException be = new BusinessException();
+		try {
+			utilisateurDAO.delete(id);
+		} catch (Exception e) {
+			be.ajouterErreur(CodesResultatDAL.DELETE_OBJET_ECHEC);
+			throw be;
+		}
+	}
+//	public List<Utilisateur> selectionnerTousLesUtilisateurs() throws BusinessException{
+//		return utilisateurDAO.select();
+//	}
 	
 	public Utilisateur selectionnerUtilisateurAvecId(int id) throws BusinessException{
 		return utilisateurDAO.selectById(id);
@@ -52,73 +85,98 @@ public class UtilisateurManager {
 	public Utilisateur selectionnerUtilisateurAvecPseudo(String pseudo) throws BusinessException {
 		return utilisateurDAO.selectByPseudo(pseudo);
 	}
-	
-	private void validerPseudo(String pseudo, BusinessException be) {
-		if ( pseudo == null || pseudo.trim().length() < 3 ) {
-			be.ajouterErreur(CodesResultatBLL.PSEUDO_TROP_COURT);
+
+	public void validerMdp (String mdp, String conf, BusinessException be) {
+		if (mdp== null || mdp.length()>30 || mdp.trim().isEmpty()){
+			be.ajouterErreur(CodesResultatBLL.MPD_ERREUR);
+		}else if (conf== null || conf.length()>30 || conf.trim().isEmpty()) {
+			be.ajouterErreur(CodesResultatBLL.CONFIRMATION_ERREUR);
+		}else if (!mdp.equals(conf)) {
+			be.ajouterErreur(CodesResultatBLL.MDP_CONFIRMATION_ERREUR);
 		}
-		
+	}
+	
+	public void validerPseudo (String s, BusinessException be) {
+		String regex = "^[a-zA-Z0-9]+$";
+		Pattern pattern = Pattern.compile(regex);
+		Matcher matcher = pattern.matcher(s);
+		if (s==null || s.length()>30 || s.trim().isEmpty() ||!matcher.matches()) {
+				be.ajouterErreur(CodesResultatBLL.PSEUDO_ERREUR);
+		}else {
+			try {
+				Utilisateur utilisateur = utilisateurDAO.selectByPseudo(s);
+				
+				if (utilisateur != null) {
+					be.ajouterErreur(CodesResultatBLL.PSEUDO_UNIQUE_ERREUR);
+				}
+			} catch (BusinessException e1) {
+				be.ajouterErreur(CodesResultatDAL.SELECT_PSEUDO_ECHEC);
+			}
+		}
+	}
+	
+	public void validerNom (String s, BusinessException be) {
+		if (s==null || s.length()>30 || s.trim().length()==0) {
+			be.ajouterErreur(CodesResultatBLL.NOM_ERREUR);
+		}
+	}
+	
+	public void validerPrenom (String s, BusinessException be) {
+		if (s==null || s.length()>30 || s.trim().isEmpty()) {
+			be.ajouterErreur(CodesResultatBLL.PRENOM_ERREUR);
+		}
+	}
+	
+	public void validerEmail (String s, BusinessException be) {
+		String regex ="^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
+				+ "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
+		Pattern pattern = Pattern.compile(regex);
+		Matcher matcher = pattern.matcher(s);
+		if (s==null || s.length()>30 || s.trim().isEmpty()||!matcher.matches()) {
+			be.ajouterErreur(CodesResultatBLL.EMAIL_ERREUR);
+		}else {
+			try {
+				Utilisateur utilisateur = utilisateurDAO.selectByEmail(s);
+
+				if (utilisateur != null) {
+					be.ajouterErreur(CodesResultatBLL.EMAIL_UNIQUE_ERREUR);
+				}
+			} catch (BusinessException e1) {
+				be.ajouterErreur(CodesResultatDAL.SELECT_EMAIL_ECHEC);
+			}
+		}
+	}
+	
+	public void validerTel (String s, BusinessException be) {
+		String regex = "^[0-9]{10,15}$";
+		Pattern pattern = Pattern.compile(regex);
+		Matcher matcher = pattern.matcher(s);
+		if (s==null || s.length()>30 || s.trim().isEmpty() ||!matcher.matches()) {
+			be.ajouterErreur(CodesResultatBLL.TEL_ERREUR);
+		}
+	}
+	
+	public void validerRue (String s, BusinessException be) {
+		if (s==null || s.length()>30 || s.trim().isEmpty()) {
+			be.ajouterErreur(CodesResultatBLL.RUE_ERREUR);
+		}
+	}
+	
+	public void validerCp (String s, BusinessException be) {
+		String regex = "^[0-9]{5,10}$";
+		Pattern pattern = Pattern.compile(regex);
+		Matcher matcher = pattern.matcher(s);
+		if (s==null || s.length()>30 || s.trim().isEmpty() ||!matcher.matches()) {
+			be.ajouterErreur(CodesResultatBLL.CP_ERREUR);
+		}
+	}
+	
+	public void validerVille (String s, BusinessException be) {
+		if (s==null || s.length()>30 || s.trim().isEmpty()) {
+			be.ajouterErreur(CodesResultatBLL.VILLE_ERREUR);
+		}
 	}
 
-	private void validerNom(String nom, BusinessException be) {
-		if ( nom == null || nom.trim().length() < 3 ) {
-			be.ajouterErreur(CodesResultatBLL.NOM_TROP_COURT);
-		}
-		
-	}
-	
-	private void validerPrenom(String prenom, BusinessException be) {
-		if ( prenom == null || prenom.trim().length() < 3 ) {
-			be.ajouterErreur(CodesResultatBLL.PRENOM_TROP_COURT);
-		}
-		
-	}
-	
-	private void validerEmail( String email, BusinessException be ){
-		if ( email == null || email.trim().length() < 3 ) {
-			be.ajouterErreur(CodesResultatBLL.EMAIL_NON_SAISIE);
-		}
-    }
-	
-	private void validerTelephone(String telephone, BusinessException be) {
-		if ( telephone == null || telephone.trim().length() != 10 ) {
-			be.ajouterErreur(CodesResultatBLL.TELEPHONE_TROP_COURT);
-		}else if (!telephone.matches("[0-9]{10}")) {
-			be.ajouterErreur(CodesResultatBLL.TELEPHONE_NON_VALIDE);
-		}
-	}
-	
-	private void validerRue(String rue, BusinessException be) {
-		if ( rue == null || rue.trim().length() < 3 ) {
-			be.ajouterErreur(CodesResultatBLL.RUE_TROP_COURT);
-		}
-	}
-	
-	private void validerCP(String code_postal, BusinessException be) {
-		if ( code_postal == null || code_postal.trim().length() != 5 ) {
-			be.ajouterErreur(CodesResultatBLL.CP_NON_SAISIE);
-		}else if (!code_postal.matches("[0-9]{5}")) {
-			be.ajouterErreur(CodesResultatBLL.CP_NON_VALIDE);
-		}
-	}
-	
-	private void validerVille(String ville, BusinessException be) {
-		if ( ville == null || ville.trim().length() < 3 ) {
-			be.ajouterErreur(CodesResultatBLL.VILLE_TROP_COURT);
-		}
-	}
-	
-	private void validerMDP(String mot_de_passe, String confirmation, BusinessException be) {
-		if (mot_de_passe != null && mot_de_passe.trim().length() != 0 && confirmation != null && confirmation.trim().length() != 0) {
-            if (!mot_de_passe.equals(confirmation)) {
-            	be.ajouterErreur(CodesResultatBLL.MDP_CONFIRMATION_DIFFERENT);
-            } else if (mot_de_passe.trim().length() < 3) {
-            	be.ajouterErreur(CodesResultatBLL.MDP_TROP_COURT);
-            }
-        } else {
-        	be.ajouterErreur(CodesResultatBLL.MDP_NON_RENSEIGNER);
-        }
-		
-	}
+
 
 }

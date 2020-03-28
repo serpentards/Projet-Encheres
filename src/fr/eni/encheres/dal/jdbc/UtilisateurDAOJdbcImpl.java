@@ -21,8 +21,8 @@ public class UtilisateurDAOJdbcImpl implements UtilisateurDAO {
 	private static final String SELECT_ID = "SELECT no_utilisateur,pseudo,nom,prenom,email,telephone,rue,code_postal,ville,mot_de_passe,credit,administrateur FROM UTILISATEURS u WHERE u.no_utilisateur=?;";
 	private static final String SELECT_EMAIL = "SELECT no_utilisateur, pseudo, nom, prenom, email, telephone, rue, code_postal, ville, mot_de_passe, credit, administrateur FROM UTILISATEURS WHERE email=?;";
 	private static final String SELECT_PSEUDO = "SELECT no_utilisateur, pseudo, nom, prenom, email, telephone, rue, code_postal, ville, mot_de_passe, credit, administrateur FROM UTILISATEURS WHERE pseudo=?;";
-	private static final String DELETE_UTILISATEUR = "DELETE FROM UTILISATEUR WHERE no_utilisateur=?;";
-	private static final String UPDATE = "UPDATE UTILISATEURS SET pseudo = ?,nom = ?,prenom = ?,email = ?,telephone = ?,rue = ?,code_postal = ?,ville = ?,mot_de_passe = ?,credit = ?,administrateur = ?WHERE no_utilisateur=?;";
+	private static final String DELETE_UTILISATEUR = "DELETE FROM UTILISATEURS WHERE no_utilisateur=?;";
+	private static final String UPDATE = "UPDATE UTILISATEURS SET nom = ?,prenom = ?,email = ?,telephone = ?,rue = ?,code_postal = ?,ville = ?,mot_de_passe = ? WHERE no_utilisateur=?;";
 
 	@Override
 	public void insert(Utilisateur utilisateur) throws BusinessException {
@@ -75,26 +75,26 @@ public class UtilisateurDAOJdbcImpl implements UtilisateurDAO {
 		}
 	}
 
-	@Override
-	public List<Utilisateur> select() throws BusinessException {
-		List<Utilisateur> listeUtilisateurs = new ArrayList<Utilisateur>();
-		try (Connection cnx = ConnectionProvider.getConnection(); Statement smt = cnx.createStatement();) {
-			ResultSet rs = smt.executeQuery(SELECT_ALL);
-			Utilisateur utilisateurCourant = new Utilisateur();
-			while (rs.next()) {
-				if (rs.getInt("no_utilisateur") != utilisateurCourant.getNoUtilisateur()) {
-					utilisateurCourant = mappingUtilisateur(rs);
-					listeUtilisateurs.add(utilisateurCourant);
-				}
-			}
-			return listeUtilisateurs;
-		} catch (SQLException e) {
-			e.printStackTrace();
-			BusinessException be = new BusinessException();
-			be.ajouterErreur(CodesResultatDAL.SELECT_ALL_ECHEC);
-			throw be;
-		}
-	}
+//	@Override
+//	public List<Utilisateur> select() throws BusinessException {
+//		List<Utilisateur> listeUtilisateurs = new ArrayList<Utilisateur>();
+//		try (Connection cnx = ConnectionProvider.getConnection(); Statement smt = cnx.createStatement();) {
+//			ResultSet rs = smt.executeQuery(SELECT_ALL);
+//			Utilisateur utilisateurCourant = new Utilisateur();
+//			while (rs.next()) {
+//				if (rs.getInt("no_utilisateur") != utilisateurCourant.getNoUtilisateur()) {
+//					utilisateurCourant = mappingUtilisateur(rs);
+//					listeUtilisateurs.add(utilisateurCourant);
+//				}
+//			}
+//			return listeUtilisateurs;
+//		} catch (SQLException e) {
+//			e.printStackTrace();
+//			BusinessException be = new BusinessException();
+//			be.ajouterErreur(CodesResultatDAL.SELECT_ALL_ECHEC);
+//			throw be;
+//		}
+//	}
 
 	@Override
 	public Utilisateur selectById(int id) throws BusinessException {
@@ -167,18 +167,15 @@ public class UtilisateurDAOJdbcImpl implements UtilisateurDAO {
 		BusinessException be = new BusinessException();
 		try (Connection cnx = ConnectionProvider.getConnection();
 				PreparedStatement psmt = cnx.prepareStatement(UPDATE);) {
-			psmt.setString(1, utilisateur.getPseudo());
-			psmt.setString(2, utilisateur.getNom());
-			psmt.setString(3, utilisateur.getPrenom());
-			psmt.setString(4, utilisateur.getEmail());
-			psmt.setString(5, utilisateur.getTelephone());
-			psmt.setString(6, utilisateur.getRue());
-			psmt.setString(7, utilisateur.getCode_postal());
-			psmt.setString(8, utilisateur.getVille());
-			psmt.setString(9, utilisateur.getMot_de_passe());
-			psmt.setInt(10, utilisateur.getCredit());
-			psmt.setBoolean(11, utilisateur.isAdministrateur());
-			psmt.setInt(12, utilisateur.getNoUtilisateur());
+			psmt.setString(1, utilisateur.getNom());
+			psmt.setString(2, utilisateur.getPrenom());
+			psmt.setString(3, utilisateur.getEmail());
+			psmt.setString(4, utilisateur.getTelephone());
+			psmt.setString(5, utilisateur.getRue());
+			psmt.setString(6, utilisateur.getCode_postal());
+			psmt.setString(7, utilisateur.getVille());
+			psmt.setString(8, utilisateur.getMot_de_passe());
+			psmt.setInt(9, utilisateur.getNoUtilisateur());
 			int nbEnr = psmt.executeUpdate();
 			if (nbEnr != 1) {
 				be.ajouterErreur(CodesResultatDAL.UPDATE_OBJET_ECHEC);

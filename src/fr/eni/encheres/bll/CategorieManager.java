@@ -8,14 +8,18 @@ import fr.eni.encheres.dal.DAOFactory;
 import fr.eni.encheres.exception.BusinessException;
 
 public class CategorieManager {
-
-	private CategorieDAO categorieDAO;
-
+private CategorieDAO categorieDAO;
+	
 	public CategorieManager() {
 		categorieDAO = DAOFactory.getCategorieDAO();
 	}
-
-	public List<Categorie> selectionnerToutesLesCategories() throws BusinessException {
+	
+	public List<Categorie> selectionnerToutesLesCategories() throws BusinessException{
 		return categorieDAO.select();
 	}
+	
+	public Categorie selectionnerCategorieParId(int id) throws BusinessException{
+		return categorieDAO.selectById(id);
+	}
+
 }
