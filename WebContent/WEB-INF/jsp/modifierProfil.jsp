@@ -69,7 +69,7 @@
 		
 		<input type="submit" value="Enregistrer" /> 
 		
-		<input type="button" value="Annuler" onclick="location.href='/Accueil'"/>
+		<input type="button" value="Annuler" onclick="location.href='<%=request.getContextPath()%>/Accueil'"/>
  	</form>
 	<div class="contenu">
 		<a href="<%=request.getContextPath()%>/Supprimer"> <input
