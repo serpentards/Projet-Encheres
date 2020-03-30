@@ -10,31 +10,31 @@
 </head>
 <body>
 		<label for="pseudo">Pseudo : </label> 
-		<input type="text" id="pseudo" name="pseudo" value="<%=u.getPseudo() %>" disabled="disabled" /> <br />
+		<input type="text" id="pseudo" name="pseudo" value="${ sessionUtilisateur.pseudo }" disabled="disabled" /> <br />
 		
 		<label for="email">Email : </label> 
-		<input type="text" id="email" name="email" value="<%=u.getEmail()%>" disabled="disabled" /> <br /> 
+		<input type="text" id="email" name="email" value="${ sessionUtilisateur.email }" disabled="disabled" /> <br /> 
 		
 		<label for="nom">Nom : </label> 
-		<input type="text" id="nom" name="nom" value="<%=u.getNom()%>" disabled="disabled"/> <br /> 
+		<input type="text" id="nom" name="nom" value="${ sessionUtilisateur.nom }" disabled="disabled"/> <br /> 
 		
 		<label for="prenom">Prénom : </label> 
-		<input type="text" id="prenom" name="prenom" value="<%=u.getPrenom() %>" disabled="disabled"/> <br /> 
+		<input type="text" id="prenom" name="prenom" value="${ sessionUtilisateur.prenom }" disabled="disabled"/> <br /> 
 		
 		<label for="telephone">Telephone : </label> 
-		<input type="tel" id="telephone" name="telephone" value="<%=u.getTelephone()%>" disabled="disabled"/> <br /> 
+		<input type="tel" id="telephone" name="telephone" value="${ sessionUtilisateur.telephone }" disabled="disabled"/> <br /> 
 		
 		<label for="rue">Rue : </label> 
-		<input type="text" id="rue" name="rue" value="<%=u.getRue()%>" disabled="disabled"/><br /> 
+		<input type="text" id="rue" name="rue" value="${ sessionUtilisateur.rue }" disabled="disabled"/><br /> 
 		
 		<label for="ville">Ville : </label> 
-		<input type="text" id="ville" name="ville" value="<%=u.getVille()%>" disabled="disabled"/> <br /> 
+		<input type="text" id="ville" name="ville" value="${ sessionUtilisateur.ville }" disabled="disabled"/> <br /> 
 		
 		<label for="cp">Code Postal : </label> 
-		<input type="number" id="code_postal" name="cp" value="<%=u.getCode_postal() %>" disabled="disabled"/> <br /> 
+		<input type="number" id="code_postal" name="cp" value="${ sessionUtilisateur.code_postal }" disabled="disabled"/> <br /> 
 		
 		<label for="credit">Crédit : </label> 
-		<input type="number" id="credit" name="credit" value="<%=u.getCredit() %>" disabled="disabled"/> <br /> 
+		<input type="number" id="credit" name="credit" value="${ sessionUtilisateur.credit }" disabled="disabled"/> <br /> 
 		
 		
 

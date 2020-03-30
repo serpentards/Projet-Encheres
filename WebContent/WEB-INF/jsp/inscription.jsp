@@ -8,26 +8,17 @@
 </head>
 <body>
 	<h1 align="center">Mon profil</h1>
-	<%
-		if (request.getAttribute("listeCodesErreur") != null) {
-			List<Integer> listeCodesErreur = (List<Integer>) request.getAttribute("listeCodesErreur");
-	%>
-	<div class="alert alert-danger" role="alert">
-		<strong>Erreur!</strong>
-		<ul>
-			<%
-				for (Integer code : listeCodesErreur) {
-			%>
-
-			<li><%=LecteurMessage.getMessageErreur(code)%></li>
-			<%
-				}
-			%>
-		</ul>
-	</div>
-	<%
-		}
-	%>
+	<!-- Lecture des messages d'erreur -->
+	<c:if test="${ !empty listeCodesErreur }">
+		<div class="alert alert-danger" role="alert">
+			<strong>Erreur!</strong>
+			<ul>
+				<c:forEach items="${ listeCodesErreur }" var="code">
+					<li><%=LecteurMessage.getMessageErreur((int)pageContext.getAttribute("code"))%></li>
+				</c:forEach>
+			</ul>
+		</div>
+	</c:if>
 	<form method="post" action="<%=request.getContextPath()%>/Inscription">
 
 		<label for="pseudo">Pseudo : </label> 
