@@ -8,6 +8,7 @@
 <title>Connexion</title>
 </head>
 <body>
+
 	<!-- Lecture des messages d'erreur -->
 	<c:if test="${ !empty listeCodesErreur }">
 		<div class="alert alert-danger" role="alert">
@@ -19,6 +20,7 @@
 			</ul>
 		</div>
 	</c:if>
+
 	<h1 class="h3 mb-3 font-weight-normal">Connectez-vous</h1>
 	<form method="post" action="<%=request.getContextPath()%>/Connexion">
 

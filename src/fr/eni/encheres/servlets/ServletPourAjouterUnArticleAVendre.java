@@ -2,6 +2,7 @@ package fr.eni.encheres.servlets;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
@@ -62,14 +63,14 @@ public class ServletPourAjouterUnArticleAVendre extends HttpServlet {
     	request.setCharacterEncoding("UTF-8");
     	String nomArticle = request.getParameter("article");
     	String description = request.getParameter("description");
-    	LocalDate dateDebutEncheres = null;
-    	LocalDate dateFinEncheres = null;
+    	LocalDateTime dateDebutEncheres = null;
+    	LocalDateTime dateFinEncheres = null;
     	int miseAPrix = Integer.parseInt(request.getParameter("prix"));
     	int prixVente = 0;
     	int etatVente = 1;
     	
     	//Association
-    	List<Enchere> listEncheres = null;
+    	Enchere enchere = null;
     	Categorie categorieArticle = null;
     	Retrait lieuRetrait = null;
     	Utilisateur vendeur = null;
@@ -109,8 +110,7 @@ public class ServletPourAjouterUnArticleAVendre extends HttpServlet {
         
         try
         {
-        	DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        	dateDebutEncheres = LocalDate.parse(request.getParameter("dateDebut"),dtf);
+        	dateDebutEncheres = LocalDateTime.parse(request.getParameter("dateDebut"));
         }
         catch(DateTimeParseException e)
         {
@@ -119,8 +119,7 @@ public class ServletPourAjouterUnArticleAVendre extends HttpServlet {
         }
         try
         {
-        	DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        	dateFinEncheres = LocalDate.parse(request.getParameter("dateFin"),dtf);
+        	dateFinEncheres = LocalDateTime.parse(request.getParameter("dateFin"));
         }
         catch(DateTimeParseException e)
         {
@@ -140,9 +139,9 @@ public class ServletPourAjouterUnArticleAVendre extends HttpServlet {
 			else {
 				 //J'ajoute l'article
 				ArticleVenduManager articleVenduManager = new ArticleVenduManager();
-				articleVenduManager.ajouterArticle(nomArticle, description, dateDebutEncheres, dateFinEncheres, miseAPrix, prixVente, etatVente, listEncheres, categorieArticle, lieuRetrait, vendeur);
+				articleVenduManager.ajouterArticle(nomArticle, description, dateDebutEncheres, dateFinEncheres, miseAPrix, prixVente, etatVente, enchere, categorieArticle, lieuRetrait, vendeur);
 				//Si tout se passe bien, je vais vers la page d'Acceuil:
-				RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/jsp/accueil.jsp");
+				RequestDispatcher rd = request.getRequestDispatcher("/Accueil");
 				rd.forward(request, response);
 			}
 		} catch (BusinessException e) {

@@ -1,6 +1,6 @@
 package fr.eni.encheres.bll;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import fr.eni.encheres.bo.ArticleVendu;
@@ -19,8 +19,8 @@ public class ArticleVenduManager {
 		articleVenduDAO = DAOFactory.getArticleVenduDAO();
 	}
 	
-	public ArticleVendu ajouterArticle(String nomArticle, String description, LocalDate dateDebutEncheres, LocalDate dateFinEncheres,
-			int miseAPrix, int prixVente, int etatVente, List<Enchere> listEncheres, Categorie categorieArticle,
+	public ArticleVendu ajouterArticle(String nomArticle, String description, LocalDateTime dateDebutEncheres, LocalDateTime dateFinEncheres,
+			int miseAPrix, int prixVente, int etatVente, Enchere enchere, Categorie categorieArticle,
 			Retrait lieuRetrait, Utilisateur vendeur)throws BusinessException{
 		BusinessException be = new BusinessException();
 		//valider les champs
@@ -31,12 +31,16 @@ public class ArticleVenduManager {
 		
 		ArticleVendu article = null;
 		if(!be.hasErreurs()) {
-			article = new ArticleVendu(nomArticle, description, dateDebutEncheres, dateFinEncheres, miseAPrix, prixVente, etatVente, listEncheres, categorieArticle, lieuRetrait, vendeur);
+			article = new ArticleVendu(nomArticle, description, dateDebutEncheres, dateFinEncheres, miseAPrix, prixVente, etatVente, enchere, categorieArticle, lieuRetrait, vendeur);
 			articleVenduDAO.insert(article);
 		}else {
 			throw be;
 		}
 		return article;
+	}
+	
+	public List<ArticleVendu> selectionnerTousLesArticles() throws BusinessException {
+		return articleVenduDAO.select();
 	}
 	
 	private void validerNom(String nomArticle, BusinessException be) {
@@ -51,8 +55,8 @@ public class ArticleVenduManager {
 		}
 	}
 	
-	private void validerDates(LocalDate dateDebutEncheres, LocalDate dateFinEncheres, BusinessException be) {
-		LocalDate now = LocalDate.now();
+	private void validerDates(LocalDateTime dateDebutEncheres, LocalDateTime dateFinEncheres, BusinessException be) {
+		LocalDateTime now = LocalDateTime.now().minusMinutes(1);
 		if(dateDebutEncheres == null || dateFinEncheres == null || dateDebutEncheres.isBefore(now)|| dateFinEncheres.isEqual(now) || dateFinEncheres.isBefore(now) || dateDebutEncheres.isAfter(dateFinEncheres)) {
 			be.ajouterErreur(CodesResultatBLL.DATE_ERREUR);
 		}
@@ -63,5 +67,4 @@ public class ArticleVenduManager {
 			be.ajouterErreur(CodesResultatBLL.PRIX_ARTICLE_INCORRECT);
 		}
 	}
-
 }

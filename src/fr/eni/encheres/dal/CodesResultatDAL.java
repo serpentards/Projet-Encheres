@@ -22,4 +22,6 @@ public abstract class CodesResultatDAL {
 
 	public static final int SELECT_ALL_CATEGORIE_ECHEC = 10006;
 
+	public static final int SELECT_ALL_ARTICLE_ECHEC = 10007;
+
 }

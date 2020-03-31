@@ -19,6 +19,8 @@
 			</ul>
 		</div>
 	</c:if>
+	
+	<!-- Formulaire d'inscription -->
 	<form method="post" action="<%=request.getContextPath()%>/Inscription">
 
 		<label for="pseudo">Pseudo : </label> 

@@ -1,28 +1,29 @@
 package fr.eni.encheres.bo;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public class Enchere {
-	private LocalDate dateEnchere;
+	private LocalDateTime dateEnchere;
 	private int montantEnchere;
 	
-	ArticleVendu article;
+	private Utilisateur acheteur;
 	
 	public Enchere() {
 		// TODO Auto-generated constructor stub
 	}
 
-	public Enchere(LocalDate dateEnchere, int montantEnchere) {
+	public Enchere(LocalDateTime dateEnchere, int montantEnchere,Utilisateur acheteur) {
 		super();
 		this.dateEnchere = dateEnchere;
 		this.montantEnchere = montantEnchere;
+		this.acheteur = acheteur;
 	}
 
-	public LocalDate getDateEnchere() {
+	public LocalDateTime getDateEnchere() {
 		return dateEnchere;
 	}
 
-	public void setDateEnchere(LocalDate dateEnchere) {
+	public void setDateEnchere(LocalDateTime dateEnchere) {
 		this.dateEnchere = dateEnchere;
 	}
 
@@ -34,12 +35,21 @@ public class Enchere {
 		this.montantEnchere = montantEnchere;
 	}
 
+	public Utilisateur getAcheteur() {
+		return acheteur;
+	}
+
+	public void setAcheteur(Utilisateur acheteur) {
+		this.acheteur = acheteur;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((dateEnchere == null) ? 0 : dateEnchere.hashCode());
 		result = prime * result + montantEnchere;
+		result = prime * result + ((acheteur == null) ? 0 : acheteur.hashCode());
 		return result;
 	}
 
@@ -59,14 +69,18 @@ public class Enchere {
 			return false;
 		if (montantEnchere != other.montantEnchere)
 			return false;
+		if (acheteur == null) {
+			if (other.acheteur != null)
+				return false;
+		} else if (!acheteur.equals(other.acheteur))
+			return false;
 		return true;
 	}
 
 	@Override
 	public String toString() {
-		return "Enchere [dateEnchere=" + dateEnchere + ", montantEnchere=" + montantEnchere + "]";
+		return "Enchere [dateEnchere=" + dateEnchere + ", montantEnchere=" + montantEnchere + ", acheteur="
+				+ acheteur + "]";
 	}
-	
-	
 
 }

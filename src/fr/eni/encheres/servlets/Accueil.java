@@ -11,7 +11,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import fr.eni.encheres.bll.ArticleVenduManager;
 import fr.eni.encheres.bll.CategorieManager;
+import fr.eni.encheres.bo.ArticleVendu;
 import fr.eni.encheres.bo.Categorie;
 import fr.eni.encheres.exception.BusinessException;
 
@@ -43,6 +45,15 @@ public class Accueil extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		ArticleVenduManager articleVenduManager = new ArticleVenduManager();
+		
+		try {
+			List<ArticleVendu> listArticle = articleVenduManager.selectionnerTousLesArticles();
+			request.setAttribute("listArticle", listArticle);
+		} catch (BusinessException e) {
+			e.printStackTrace();
+		}
+		
 		RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/jsp/accueil.jsp");
 		rd.forward(request, response);
 	}
@@ -51,8 +62,7 @@ public class Accueil extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		doGet(request, response);
+		System.out.println(request.getAttribute("listArticles"));
 	}
 
 }
