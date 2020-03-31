@@ -8,26 +8,19 @@
 <title>Connexion</title>
 </head>
 <body>
-	<%
-		if (request.getAttribute("listeCodesErreur") != null) {
-			List<Integer> listeCodesErreur = (List<Integer>) request.getAttribute("listeCodesErreur");
-	%>
-	<div class="alert alert-danger" role="alert">
-		<strong>Erreur!</strong>
-		<ul>
-			<%
-				for (Integer code : listeCodesErreur) {
-			%>
 
-			<li><%=LecteurMessage.getMessageErreur(code)%></li>
-			<%
-				}
-			%>
-		</ul>
-	</div>
-	<%
-		}
-	%>
+	<!-- Lecture des messages d'erreur -->
+	<c:if test="${ !empty listeCodesErreur }">
+		<div class="alert alert-danger" role="alert">
+			<strong>Erreur!</strong>
+			<ul>
+				<c:forEach items="${ listeCodesErreur }" var="code">
+					<li><%=LecteurMessage.getMessageErreur((int)pageContext.getAttribute("code"))%></li>
+				</c:forEach>
+			</ul>
+		</div>
+	</c:if>
+
 	<h1 class="h3 mb-3 font-weight-normal">Connectez-vous</h1>
 	<form method="post" action="<%=request.getContextPath()%>/Connexion">
 

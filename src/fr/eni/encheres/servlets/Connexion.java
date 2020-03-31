@@ -22,7 +22,7 @@ import fr.eni.encheres.exception.BusinessException;
 @WebServlet("/Connexion")
 public class Connexion extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
+
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
 	 *      response)
@@ -48,7 +48,7 @@ public class Connexion extends HttpServlet {
 			/* Récupération de la session depuis la requête */
 			request.getSession().setAttribute("sessionUtilisateur", utilisateur);
 			// Si tout se passe bien, je vais vers la page de connection:
-			RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/jsp/accueil.jsp");
+			RequestDispatcher rd = request.getRequestDispatcher("/Accueil");
 			rd.forward(request, response);
 		}else {
 			RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/jsp/connexion.jsp");
@@ -92,7 +92,7 @@ public class Connexion extends HttpServlet {
 			/* Récupération de la session depuis la requête */
 			request.getSession().setAttribute("sessionUtilisateur", utilisateur);
 			// Si tout se passe bien, je vais vers la page de connection:
-			RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/jsp/accueil.jsp");
+			RequestDispatcher rd = request.getRequestDispatcher("/Accueil");
 			rd.forward(request, response);
 		}
 

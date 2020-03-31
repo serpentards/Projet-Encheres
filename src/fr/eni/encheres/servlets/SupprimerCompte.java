@@ -35,8 +35,8 @@ public class SupprimerCompte extends HttpServlet {
 			/* Récupération et destruction de la session en cours */
 	        HttpSession session = request.getSession();
 	        session.invalidate();
-
-	        /* Redirection vers le Site du Zéro ! */
+	        
+	        /* Redirection vers l'accueil ! */
 	        response.sendRedirect( "./Accueil" );
 
 		} catch (BusinessException e) {

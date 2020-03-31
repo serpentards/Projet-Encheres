@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Accueil</title>
+<title>Acceuil</title>
 </head>
 <body>
 	<c:choose>
@@ -32,6 +32,35 @@
 				<option value="${ categorie.noCategorie }">${ categorie.libelle }</option>
 			</c:forEach>
 		</select><br>
+		
+         
+		<!-- Lecture de la liste d'article -->
+		<c:if test="${ !empty listArticle }">
+			<table>
+				<thead>
+					<tr>
+						<th colspan="2">Liste des articles a vendre</th>
+					</tr>
+				</thead>
+				<tbody>
+				<c:forEach items="${ listArticle }" var="article">
+					<tr>
+						<td>
+						<a href="" title="Détail de l'article !">${ article.nomArticle }</a><br>
+						<c:choose>
+							<c:when test="${ article.prixVente != 0 }">
+								Prix actuel : ${ article.prixVente }<br>
+							</c:when>
+							<c:otherwise>
+								Mise a prix : ${ article.miseAPrix }<br>
+							</c:otherwise>
+						</c:choose> Fin de l'enchere : ${ article.dateFinEncheres }<br>
+						</td>
+					</tr>
+				</c:forEach>
+				</tbody>
+			</table>
+		</c:if>
 	<p class="mt-5 mb-3 text-muted">© BollobArt</p>
 </body>
 </html>

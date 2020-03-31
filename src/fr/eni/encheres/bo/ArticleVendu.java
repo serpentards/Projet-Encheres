@@ -1,32 +1,29 @@
 package fr.eni.encheres.bo;
 
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
+import java.time.LocalDateTime;
 
 public class ArticleVendu {
 	
 	private int noArticle;
 	private String nomArticle;
 	private String description;
-	private LocalDate dateDebutEncheres;
-	private LocalDate dateFinEncheres;
+	private LocalDateTime dateDebutEncheres;
+	private LocalDateTime dateFinEncheres;
 	private int miseAPrix;
 	private int prixVente;
 	private int etatVente;
 	
 	//Association
-	private List<Enchere> listEncheres;
+	private Enchere enchere;
 	private Categorie categorieArticle;
 	private Retrait lieuRetrait;
 	private Utilisateur vendeur;
 	
 	public ArticleVendu() {
-		this.listEncheres = new ArrayList<Enchere>();
 	}
 
-	public ArticleVendu(String nomArticle, String description, LocalDate dateDebutEncheres, LocalDate dateFinEncheres,
-			int miseAPrix, int prixVente, int etatVente, List<Enchere> listEncheres, Categorie categorieArticle,
+	public ArticleVendu(String nomArticle, String description, LocalDateTime dateDebutEncheres, LocalDateTime dateFinEncheres,
+			int miseAPrix, int prixVente, int etatVente, Enchere enchere, Categorie categorieArticle,
 			Retrait lieuRetrait, Utilisateur vendeur) {
 		super();
 		this.nomArticle = nomArticle;
@@ -36,16 +33,16 @@ public class ArticleVendu {
 		this.miseAPrix = miseAPrix;
 		this.prixVente = prixVente;
 		this.etatVente = etatVente;
-		this.listEncheres = listEncheres;
+		this.enchere = enchere;
 		this.categorieArticle = categorieArticle;
 		this.lieuRetrait = lieuRetrait;
 		this.vendeur = vendeur;
 	}
 
-	public ArticleVendu(int noArticle, String nomArticle, String description, LocalDate dateDebutEncheres,
-			LocalDate dateFinEncheres, int miseAPrix, int prixVente, int etatVente, List<Enchere> listEncheres,
+	public ArticleVendu(int noArticle, String nomArticle, String description, LocalDateTime dateDebutEncheres,
+			LocalDateTime dateFinEncheres, int miseAPrix, int prixVente, int etatVente, Enchere enchere,
 			Categorie categorieArticle, Retrait lieuRetrait, Utilisateur acheteur) {
-		this(nomArticle, description, dateDebutEncheres, dateFinEncheres, miseAPrix, prixVente, etatVente, listEncheres, categorieArticle, lieuRetrait, acheteur);
+		this(nomArticle, description, dateDebutEncheres, dateFinEncheres, miseAPrix, prixVente, etatVente, enchere, categorieArticle, lieuRetrait, acheteur);
 		this.noArticle = noArticle;
 		
 	}
@@ -74,19 +71,19 @@ public class ArticleVendu {
 		this.description = description;
 	}
 
-	public LocalDate getDateDebutEncheres() {
+	public LocalDateTime getDateDebutEncheres() {
 		return dateDebutEncheres;
 	}
 
-	public void setDateDebutEncheres(LocalDate dateDebutEncheres) {
+	public void setDateDebutEncheres(LocalDateTime dateDebutEncheres) {
 		this.dateDebutEncheres = dateDebutEncheres;
 	}
 
-	public LocalDate getDateFinEncheres() {
+	public LocalDateTime getDateFinEncheres() {
 		return dateFinEncheres;
 	}
 
-	public void setDateFinEncheres(LocalDate dateFinEncheres) {
+	public void setDateFinEncheres(LocalDateTime dateFinEncheres) {
 		this.dateFinEncheres = dateFinEncheres;
 	}
 
@@ -114,12 +111,12 @@ public class ArticleVendu {
 		this.etatVente = etatVente;
 	}
 
-	public List<Enchere> getListEncheres() {
-		return listEncheres;
+	public Enchere getEnchere() {
+		return enchere;
 	}
 
-	public void setListEncheres(List<Enchere> listEncheres) {
-		this.listEncheres = listEncheres;
+	public void setEnchere(Enchere enchere) {
+		this.enchere = enchere;
 	}
 
 	public Categorie getCategorieArticle() {
@@ -150,7 +147,7 @@ public class ArticleVendu {
 	public String toString() {
 		return "ArticleVendu [noArticle=" + noArticle + ", nomArticle=" + nomArticle + ", description=" + description
 				+ ", dateDebutEncheres=" + dateDebutEncheres + ", dateFinEncheres=" + dateFinEncheres + ", miseAPrix="
-				+ miseAPrix + ", prixVente=" + prixVente + ", etatVente=" + etatVente + ", listEncheres=" + listEncheres
+				+ miseAPrix + ", prixVente=" + prixVente + ", etatVente=" + etatVente + ", enchere=" + enchere
 				+ ", categorieArticle=" + categorieArticle + ", lieuRetrait=" + lieuRetrait + ", vendeur=" + vendeur
 				+ "]";
 	}

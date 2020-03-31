@@ -31,12 +31,12 @@ public abstract class CodesResultatBLL {
 
 	public static final int MDP_CONFIRMATION_ERREUR = 20012;
 
-	public static final int NOM_ARTICLE_ERREUR = 0;
+	public static final int NOM_ARTICLE_ERREUR = 20013;
 
-	public static final int DESCRIPTION_ARTICLE_ERREUR = 0;
+	public static final int DESCRIPTION_ARTICLE_ERREUR = 20014;
 
-	public static final int DATE_ERREUR = 0;
+	public static final int DATE_ERREUR = 20015;
 
-	public static final int PRIX_ARTICLE_INCORRECT = 0;
+	public static final int PRIX_ARTICLE_INCORRECT = 20016;
 	
 }
