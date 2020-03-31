@@ -27,6 +27,7 @@ public class ArticleVenduDAOJdbcImpl implements ArticleVenduDAO {
 	private static final String INSERT_ARTICLE = "INSERT INTO ARTICLES_VENDUS (nom_article,description,date_debut_encheres,date_fin_encheres,prix_initial,prix_vente,no_utilisateur,no_categorie) VALUES(?,?,?,?,?,?,?,?)";
 	private static final String INSERT_RETRAIT = "INSERT INTO RETRAITS (no_article,rue,code_postal,ville) VALUES (? ,? ,? ,?)";
 	private static final String SELECT_ALL = "SELECT a.no_article,a.nom_article,a.description,a.date_debut_encheres,a.date_fin_encheres,a.prix_initial,a.prix_vente,a.no_utilisateur AS vendeur,a.no_categorie,e.date_enchere,e.montant_enchere,e.no_utilisateur AS acheteur FROM ARTICLES_VENDUS a LEFT JOIN ENCHERES e on a.no_article=e.no_article;";
+	private static final String SELECT_BY_ID = "SELECT a.no_article,a.nom_article,a.description,a.date_debut_encheres,a.date_fin_encheres,a.prix_initial,a.prix_vente,a.no_utilisateur AS vendeur,a.no_categorie,e.date_enchere,e.montant_enchere,e.no_utilisateur AS acheteur FROM ARTICLES_VENDUS a LEFT JOIN ENCHERES e on a.no_article=e.no_article WHERE a.no_article = ?;";
 
 	@Override
 	public void insert(ArticleVendu article) throws BusinessException {
@@ -114,6 +115,29 @@ public class ArticleVenduDAOJdbcImpl implements ArticleVenduDAO {
 		}
 	}
 
+	@Override
+	public ArticleVendu selectById(int id) throws BusinessException {
+		ArticleVendu articleCourant = new ArticleVendu();
+		try (Connection cnx = ConnectionProvider.getConnection();
+				PreparedStatement smt = cnx.prepareStatement(SELECT_BY_ID);) {
+			smt.setInt(1, id);
+			ResultSet rs = smt.executeQuery();
+
+			while (rs.next()) {
+				if (rs.getInt("no_article") != articleCourant.getNoArticle()) {
+					articleCourant = mappingArticleVendu(rs);
+				}
+			}
+
+			return articleCourant;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			BusinessException be = new BusinessException();
+			be.ajouterErreur(CodesResultatDAL.SELECT_ID_ECHEC);
+			throw be;
+		}
+	}
+	
 	private ArticleVendu mappingArticleVendu(ResultSet rs) throws BusinessException, SQLException {
 		ArticleVendu newArticleVendu = new ArticleVendu();
 		UtilisateurManager u1 = new UtilisateurManager();
