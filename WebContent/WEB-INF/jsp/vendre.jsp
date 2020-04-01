@@ -26,7 +26,7 @@
 		<label>Description : </label><textarea class="form-control" name="description" required></textarea><br>
 		<label>Categorie : </label><select name="categorieChoisie">
 			<c:forEach items="${ categories }" var="categorie">
-				<option value="${ categorie.noCategorie }">${ categorie.libelle }</option>
+				<option value="${ categorie }">${ categorie.libelle }</option>
 			</c:forEach>
 		</select><br>
 		<label>Photo de l'article : </label><input type="file" id="image" name="image" accept="image/png, image/jpeg" ><br>

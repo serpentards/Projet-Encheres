@@ -24,4 +24,6 @@ public abstract class CodesResultatDAL {
 
 	public static final int SELECT_ALL_ARTICLE_ECHEC = 10007;
 
+	public static final int SELECT_BY_ID_CATEGORIE_ERREUR = 10008;
+
 }

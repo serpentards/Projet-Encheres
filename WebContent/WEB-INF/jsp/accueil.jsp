@@ -11,15 +11,15 @@
 	<c:choose>
 		<c:when test="${ !empty sessionUtilisateur }">
 		<p align="right">
-		<a href="<%=request.getContextPath()%>/Deconnexion" >Enchères</a>
-		<a href="<%=request.getContextPath()%>/AjoutVente" >Vendre un article</a>
-		<a href="<%=request.getContextPath()%>/AfficherProfil" >Mon profil</a>
-		<a href="<%=request.getContextPath()%>/Deconnexion" >Déconnexion</a>
+			<a href="<c:url value="/Deconnexion"/>">Enchères</a>
+			<a href="<c:url value="/AjoutVente"/>" >Vendre un article</a>
+			<a href="<c:url value="/AfficherProfil"/>" >Mon profil</a>
+			<a href="<c:url value="/Deconnexion"/>" >Déconnexion</a>
 		</p>
 		</c:when>
 		<c:otherwise>
 		<p align="right">
-		<a href="<%=request.getContextPath()%>/Connexion">S'inscrire - Se connecter</a>
+			<a href="<c:url value="/Connexion"/>">S'inscrire - Se connecter</a>
 		</p>
 		</c:otherwise>
 	</c:choose>
@@ -27,11 +27,18 @@
 	<h1 align="center">Liste des enchères</h1>
 	
 	<h2 align="left">Filtres :</h2>
-		<label>Categorie : </label><select name="categorieChoisie">
-			<c:forEach items="${ categories }" var="categorie">
-				<option value="${ categorie.noCategorie }">${ categorie.libelle }</option>
-			</c:forEach>
-		</select><br>
+		<form action="./Accueil" method="post">
+			<input type="text" placeholder="Le nom de l'article contient" name="nomRechercher">
+			<label for="categorieChoisie">Categorie : </label>
+			<select id="categorieChoisie" name="categorieChoisie" >
+					<option selected="selected" hidden="true" value="">Choisir</option>
+				<c:forEach items="${ categories }" var="categorie">
+					<option value="${ categorie.noCategorie }">${ categorie.libelle }</option>
+				</c:forEach>
+			</select><br>
+			<input type="submit" value="Rechercher">
+		</form>
+		
 		
          
 		<!-- Lecture de la liste d'article -->
@@ -46,10 +53,10 @@
 				<c:forEach items="${ listArticle }" var="article">
 					<tr>
 						<td>
-						<a href="" title="Détail de l'article !">${ article.nomArticle }</a><br>
+						<a href="<c:url value="/AfficherArticle"/>?id=${ article.noArticle }">${ article.nomArticle }</a>
 						<c:choose>
-							<c:when test="${ article.prixVente != 0 }">
-								Prix actuel : ${ article.prixVente }<br>
+							<c:when test="${ article.enchere.montantEnchere != null }">
+								Prix actuel : ${ article.enchere.montantEnchere }<br>
 							</c:when>
 							<c:otherwise>
 								Mise a prix : ${ article.miseAPrix }<br>

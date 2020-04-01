@@ -64,7 +64,7 @@ public class Categorie {
 
 	@Override
 	public String toString() {
-		return noCategorie + " " + libelle ;
+		return noCategorie + "," + libelle ;
 	}
 	
 
