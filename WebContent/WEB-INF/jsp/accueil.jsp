@@ -53,7 +53,7 @@
 				<c:forEach items="${ listArticle }" var="article">
 					<tr>
 						<td>
-						<a href="<c:url value="/AfficherArticle"/>?id=${ article.noArticle }"/>"> ${ article.nomArticle } </a>
+						<a href="<c:url value="/AfficherArticle"/>?id=${ article.noArticle }">${ article.nomArticle }</a>
 						<c:choose>
 							<c:when test="${ article.enchere.montantEnchere != null }">
 								Prix actuel : ${ article.enchere.montantEnchere }<br>
