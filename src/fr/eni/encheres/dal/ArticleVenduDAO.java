@@ -11,4 +11,8 @@ public interface ArticleVenduDAO {
 
 	List<ArticleVendu> select() throws BusinessException;
 
+	ArticleVendu selectById(int idArticle) throws BusinessException;
+
+	List<ArticleVendu> selectByCategorie(int idCategorie) throws BusinessException;
+
 }

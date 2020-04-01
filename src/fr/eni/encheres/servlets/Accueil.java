@@ -62,7 +62,25 @@ public class Accueil extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		System.out.println(request.getAttribute("listArticles"));
+		String nomRechercher = request.getParameter("nomRechercher");
+		if (!request.getParameter("categorieChoisie").isEmpty()) {
+			int idCategorie = Integer.parseInt(request.getParameter("categorieChoisie"));
+			
+			ArticleVenduManager articleVenduManager = new ArticleVenduManager();
+			
+			try {
+				List<ArticleVendu> listArticle = articleVenduManager.selectionnerArticleParCategorie(idCategorie);
+				request.setAttribute("listArticle", listArticle);
+			} catch (BusinessException e) {
+				e.printStackTrace();
+			}
+			RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/jsp/accueil.jsp");
+			rd.forward(request, response);
+		}else {
+			doGet(request, response);
+		}
+		
+		
 	}
 
 }

@@ -91,9 +91,8 @@ public class Connexion extends HttpServlet {
 			// Je connecte l'utilisateur
 			/* Récupération de la session depuis la requête */
 			request.getSession().setAttribute("sessionUtilisateur", utilisateur);
-			// Si tout se passe bien, je vais vers la page de connection:
-			RequestDispatcher rd = request.getRequestDispatcher("/Accueil");
-			rd.forward(request, response);
+			// Si tout se passe bien, je vais vers la page d'accueil:
+			response.sendRedirect("./Accueil");
 		}
 
 	}

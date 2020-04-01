@@ -51,8 +51,14 @@ public class ServletPourAjouterUnArticleAVendre extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/jsp/vendre.jsp");
-		rd.forward(request, response);
+		if (request.getSession().getAttribute("sessionUtilisateur") != null) {
+			RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/jsp/vendre.jsp");
+			rd.forward(request, response);
+		}else {
+			response.sendRedirect("./Connexion");
+		}
+		
+		
 	}
 
 	/**
@@ -71,21 +77,16 @@ public class ServletPourAjouterUnArticleAVendre extends HttpServlet {
     	
     	//Association
     	Enchere enchere = null;
-    	Categorie categorieArticle = null;
+    	Categorie categorieArticle = new Categorie();
     	Retrait lieuRetrait = null;
     	Utilisateur vendeur = null;
         
         List<Integer> listeCodesErreur=new ArrayList<>();
         
        // CATEGORIE
-        try {
-        	CategorieManager categorieManager = new CategorieManager();
-        	int noCategorie = Integer.parseInt(request.getParameter("categorieChoisie"));
-			categorieArticle = categorieManager.selectionnerCategorieParId(noCategorie);
-		} catch (BusinessException e1) {
-			e1.printStackTrace();
-			listeCodesErreur.add(CodesResultatServlets.CATEGORIE_INEXISTANTE);
-		}
+        String[] champCategorie = request.getParameter("categorieChoisie").split(",");
+        categorieArticle.setNoCategorie(Integer.parseInt(champCategorie[0]));
+        categorieArticle.setLibelle(champCategorie[1]);
         
         //UTILISATEUR
         vendeur = (Utilisateur) request.getSession().getAttribute("sessionUtilisateur");
@@ -141,8 +142,7 @@ public class ServletPourAjouterUnArticleAVendre extends HttpServlet {
 				ArticleVenduManager articleVenduManager = new ArticleVenduManager();
 				articleVenduManager.ajouterArticle(nomArticle, description, dateDebutEncheres, dateFinEncheres, miseAPrix, prixVente, etatVente, enchere, categorieArticle, lieuRetrait, vendeur);
 				//Si tout se passe bien, je vais vers la page d'Acceuil:
-				RequestDispatcher rd = request.getRequestDispatcher("/Accueil");
-				rd.forward(request, response);
+				response.sendRedirect("./Accueil");
 			}
 		} catch (BusinessException e) {
 			//Sinon je retourne à la page d'inscription pour indiquer les problèmes:

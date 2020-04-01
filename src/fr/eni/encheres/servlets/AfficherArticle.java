@@ -7,6 +7,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import fr.eni.encheres.bll.ArticleVenduManager;
+import fr.eni.encheres.bo.ArticleVendu;
+import fr.eni.encheres.exception.BusinessException;
+
 /**
  * Servlet implementation class AfficherArticle
  */
@@ -18,15 +22,21 @@ public class AfficherArticle extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		response.getWriter().append("Served at: ").append(request.getContextPath());
+		int idArticle = Integer.parseInt(request.getParameter("id"));
+		ArticleVenduManager articleVenduManager = new ArticleVenduManager();
+		try {
+			ArticleVendu article = articleVenduManager.selectionnerArticleParId(idArticle);
+			request.setAttribute("article", article);
+		} catch (BusinessException e) {
+			e.printStackTrace();
+		}
+		request.getRequestDispatcher("/WEB-INF/jsp/afficherDetailArticle.jsp").forward(request, response);
 	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		doGet(request, response);
 	}
 

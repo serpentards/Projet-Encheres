@@ -43,6 +43,14 @@ public class ArticleVenduManager {
 		return articleVenduDAO.select();
 	}
 	
+	public ArticleVendu selectionnerArticleParId(int idArticle) throws BusinessException {
+		return articleVenduDAO.selectById(idArticle);
+	}
+	
+	public List<ArticleVendu> selectionnerArticleParCategorie(int idCategorie) throws BusinessException {
+		return articleVenduDAO.selectByCategorie(idCategorie);
+	}
+	
 	private void validerNom(String nomArticle, BusinessException be) {
 		if ( nomArticle == null || nomArticle.trim().length() < 3 ) {
 			be.ajouterErreur(CodesResultatBLL.NOM_ARTICLE_ERREUR);
