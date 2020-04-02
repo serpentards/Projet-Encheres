@@ -9,10 +9,17 @@
 <title>Acceuil</title>
 </head>
 <body>
+
+<div class="btn-group" role="group" aria-label="Basic example">
+	<a href="<c:url value="/MesEncheres"/>"><button type="button" class="btn btn-secondary" >Enchères</button></a>
+	<a href="<c:url value="/AjoutVente"/>"><button type="button" class="btn btn-secondary" >Vendre un article</button></a>
+	<a href="<c:url value="/AfficherProfil"/>"><button type="button" class="btn btn-secondary" >Mon profil</button></a>
+	<a href="<c:url value="/Deconnexion"/>"><button type="button" class="btn btn-secondary" >Déconnexion</button></a>
+</div>
 	<c:choose>
 		<c:when test="${ !empty sessionUtilisateur }">
 		<p align="right">
-			<a href="<c:url value="/Deconnexion"/>">Enchères</a>
+			<a href="<c:url value="/MesEncheres"/>">Enchères</a>
 			<a href="<c:url value="/AjoutVente"/>" >Vendre un article</a>
 			<a href="<c:url value="/AfficherProfil"/>" >Mon profil</a>
 			<a href="<c:url value="/Deconnexion"/>" >Déconnexion</a>
@@ -50,39 +57,44 @@
 			</select><br>
 			<input type="submit" value="Rechercher">
 		</form>
-		
-		
-         
-		<!-- Lecture de la liste d'article -->
-		<c:if test="${ !empty listArticle }">
-			<table>
-				<thead>
+
+
+	<!-- Lecture de la liste d'article -->
+	<c:if test="${ !empty listArticle }">
+		<table class="table">
+			<thead class="thead-dark">
+				<tr>
+					<th scope="col">#</th>
+					<th scope="col">Nom de l'article</th>
+					<th scope="col">Prix</th>
+					<th scope="col">Date de fin d'enchere</th>
+					<th scope="col">Vendeur</th>
+				</tr>
+			</thead>
+			<tbody>
+				<c:forEach items="${ listArticle }" var="article" varStatus="index">
 					<tr>
-						<th colspan="2">Liste des articles a vendre</th>
-					</tr>
-				</thead>
-				<tbody>
-				<c:forEach items="${ listArticle }" var="article">
-					<tr>
+						<th scope="row">${ index.index }</th>
+						<td><a href="<c:url value="/AfficherArticle"/>?id=${ article.noArticle }">${ article.nomArticle }</a></td>
 						<td>
-						<a href="<c:url value="/AfficherArticle"/>?id=${ article.noArticle }">${ article.nomArticle }</a><br>
-						<c:choose>
-							<c:when test="${ article.enchere.montantEnchere != null }">
-								Prix actuel : ${ article.enchere.montantEnchere }<br>
-							</c:when>
-							<c:otherwise>
-								Mise a prix : ${ article.miseAPrix }<br>
-							</c:otherwise>
-						</c:choose> Fin de l'enchere : 
-						<fmt:parseDate value="${ article.dateFinEncheres }" pattern="yyyy-MM-dd'T'HH:mm" var="parsedDateTime" type="both" />
-						<fmt:formatDate pattern="dd/mm/yyyy HH:mm" value="${ parsedDateTime }" /><br>
-						Vendeur : <a href="<c:url value="/AfficherProfil"/>?id=${ article.vendeur.noUtilisateur }">${ article.vendeur.pseudo }</a>
+							<c:choose>
+								<c:when test="${ article.enchere.montantEnchere != null }">
+									${ article.enchere.montantEnchere }
+								</c:when>
+								<c:otherwise>
+									${ article.miseAPrix }
+								</c:otherwise>
+							</c:choose>
 						</td>
+						<td>
+							<fmt:parseDate value="${ article.dateFinEncheres }" pattern="yyyy-MM-dd'T'HH:mm" var="parsedDateTime" type="both" />
+							<fmt:formatDate pattern="dd/mm/yyyy HH:mm" value="${ parsedDateTime }" />
+						<td><a href="<c:url value="/AfficherProfil"/>?id=${ article.vendeur.noUtilisateur }">${ article.vendeur.pseudo }</a></td>
 					</tr>
 				</c:forEach>
-				</tbody>
-			</table>
-		</c:if>
-	<p class="mt-5 mb-3 text-muted">© BollobArt</p>
+			</tbody>
+		</table>
+	</c:if>
+		<p class="mt-5 mb-3 text-muted">© BollobArt</p>
 </body>
 </html>
