@@ -9,15 +9,13 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import fr.eni.encheres.bll.UtilisateurManager;
 import fr.eni.encheres.bo.Utilisateur;
-import fr.eni.encheres.exception.BusinessException;
 
 /**
- * Servlet implementation class AfficherProfil
+ * Servlet implementation class MesEncheres
  */
-@WebServlet("/AfficherProfil")
-public class AfficherProfil extends HttpServlet {
+@WebServlet("/MesEncheres")
+public class MesEncheres extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
    
@@ -25,19 +23,11 @@ public class AfficherProfil extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String idEnString = request.getParameter("id");
-		if (idEnString != null) {
-			try {
-				int noUtilisateur = Integer.parseInt(idEnString);
-				UtilisateurManager utilisateurManager = new UtilisateurManager();
-				Utilisateur utilisateur = utilisateurManager.selectionnerUtilisateurAvecId(noUtilisateur);
-				request.setAttribute("sessionUtilisateur", utilisateur);
-			} catch (BusinessException e) {
-				e.printStackTrace();
-			}
-		}
+		Utilisateur utilisateur = (Utilisateur) request.getSession().getAttribute("sessionUtilisateur");
 		
-		RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/jsp/afficherProfil.jsp");
+		
+		
+		RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/jsp/mesEncheres.jsp");
 		rd.forward(request, response);
 	}
 
@@ -45,6 +35,7 @@ public class AfficherProfil extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
 		doGet(request, response);
 	}
 

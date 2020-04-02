@@ -75,7 +75,8 @@
 							</c:otherwise>
 						</c:choose> Fin de l'enchere : 
 						<fmt:parseDate value="${ article.dateFinEncheres }" pattern="yyyy-MM-dd'T'HH:mm" var="parsedDateTime" type="both" />
-						<fmt:formatDate pattern="dd/MM/yyyy HH:mm" value="${ parsedDateTime }" /><br>
+						<fmt:formatDate pattern="dd/mm/yyyy HH:mm" value="${ parsedDateTime }" /><br>
+						Vendeur : <a href="<c:url value="/AfficherProfil"/>?id=${ article.vendeur.noUtilisateur }">${ article.vendeur.pseudo }</a>
 						</td>
 					</tr>
 				</c:forEach>

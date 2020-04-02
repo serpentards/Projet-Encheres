@@ -51,6 +51,42 @@ public class ArticleVenduManager {
 		return articleVenduDAO.selectByCategorie(idCategorie);
 	}
 	
+	public List<ArticleVendu> selectionnerArticleParNomEtDescription(String string) throws BusinessException {
+		return articleVenduDAO.selectByNomDescription(string);
+	}
+	
+	public List<ArticleVendu> selectionnerArticleParNomDescriptionEtCategorie(String string, int idCategorie) throws BusinessException {
+		return articleVenduDAO.selectByNomDescriptionCategorie(string, idCategorie);
+	}
+	
+	public List<ArticleVendu> selectionnerEncheresEnCours() throws BusinessException {
+		return articleVenduDAO.selectEncheresEnCours();
+	}
+	
+	public List<ArticleVendu> selectionnerEncheresParticipe(Utilisateur utilisateur) throws BusinessException {
+		return articleVenduDAO.selectEncheresParticipe(utilisateur);
+	}
+	
+	public List<ArticleVendu> selectionnerEncheresGagne(Utilisateur utilisateur) throws BusinessException {
+		return articleVenduDAO.selectEncheresGagne(utilisateur);
+	}
+	
+	public List<ArticleVendu> selectionnerVentes(Utilisateur utilisateur) throws BusinessException {
+		return articleVenduDAO.selectVentes(utilisateur);
+	}
+    
+	public List<ArticleVendu> selectionnerVentesNonCommencees(Utilisateur utilisateur) throws BusinessException {
+		return articleVenduDAO.selectVentesNonCommencees(utilisateur);
+	}
+    
+	public List<ArticleVendu> selectionnerVentesEnCours(Utilisateur utilisateur) throws BusinessException {
+		return articleVenduDAO.selectVentesEnCours(utilisateur);
+	}
+    
+	public List<ArticleVendu> selectionnerVenteTerminees(Utilisateur utilisateur) throws BusinessException {
+		return articleVenduDAO.selectVenteTerminees(utilisateur);
+	}
+	
 	private void validerNom(String nomArticle, BusinessException be) {
 		if ( nomArticle == null || nomArticle.trim().length() < 3 ) {
 			be.ajouterErreur(CodesResultatBLL.NOM_ARTICLE_ERREUR);

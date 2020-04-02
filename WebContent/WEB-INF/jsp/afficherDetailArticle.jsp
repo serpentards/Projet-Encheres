@@ -10,11 +10,11 @@
 	nom : ${ article.nomArticle }<br>
 	description : ${ article.description }<br>
 	dateDebutEncheres : 
-	<fmt:parseDate value="${ article.dateDebutEncheres }" pattern="yyyy-MM-dd'T'HH:mm" var="parsedDateTime" type="both" />
-	<fmt:formatDate pattern="dd/MM/yyyy HH:mm" value="${ parsedDateTime }" /><br>
+	<fmt:parseDate value="${ article.dateDebutEncheres }" pattern="yyyy-MM-dd'T'HH:mm" var="parsedDateTime" type="date" />
+	<fmt:formatDate pattern="dd/MM/yyyy" value="${ parsedDateTime }" /><br>
 	dateFinEncheres : 
-	<fmt:parseDate value="${ article.dateFinEncheres }" pattern="yyyy-MM-dd'T'HH:mm" var="parsedDateTime" type="both" />
-	<fmt:formatDate pattern="dd/MM/yyyy HH:mm" value="${ parsedDateTime }" /><br>
+	<fmt:parseDate value="${ article.dateFinEncheres }" pattern="yyyy-MM-dd'T'HH:mm" var="parsedDateTime" type="date" />
+	<fmt:formatDate pattern="dd/MM/yyyy" value="${ parsedDateTime }" /><br>
 	miseAPrix : ${ article.miseAPrix }<br>
 	montantEnchere : ${ article.enchere.montantEnchere }<br>
 	vendeur : ${ article.vendeur.pseudo }<br>

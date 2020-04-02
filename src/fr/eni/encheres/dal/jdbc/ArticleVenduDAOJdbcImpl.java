@@ -29,7 +29,17 @@ public class ArticleVenduDAOJdbcImpl implements ArticleVenduDAO {
 	private static final String SELECT_ALL = "SELECT a.no_article,a.nom_article,a.description,a.date_debut_encheres,a.date_fin_encheres,a.prix_initial,a.prix_vente,a.no_utilisateur AS vendeur,a.no_categorie,e.date_enchere,e.montant_enchere,e.no_utilisateur AS acheteur FROM ARTICLES_VENDUS a LEFT JOIN ENCHERES e on a.no_article=e.no_article;";
 	private static final String SELECT_BY_ID = "SELECT a.no_article,a.nom_article,a.description,a.date_debut_encheres,a.date_fin_encheres,a.prix_initial,a.prix_vente,a.no_utilisateur AS vendeur,a.no_categorie,e.date_enchere,e.montant_enchere,e.no_utilisateur AS acheteur FROM ARTICLES_VENDUS a LEFT JOIN ENCHERES e on a.no_article=e.no_article WHERE a.no_article = ?;";
 	private static final String SELECT_BY_ID_CATEGORIE = "SELECT a.no_article,a.nom_article,a.description,a.date_debut_encheres,a.date_fin_encheres,a.prix_initial,a.prix_vente,a.no_utilisateur AS vendeur,a.no_categorie,e.date_enchere,e.montant_enchere,e.no_utilisateur AS acheteur FROM ARTICLES_VENDUS a LEFT JOIN ENCHERES e on a.no_article=e.no_article WHERE a.no_categorie = ?;";
+	private static final String SELECT_BY_NOM_DESCRIPTION = "SELECT a.no_article, a.nom_article, a.description, a.date_debut_encheres, a.date_fin_encheres, a.prix_initial, a.prix_vente, a.no_utilisateur AS vendeur, a.no_categorie, e.date_enchere, e.montant_enchere, e.no_utilisateur AS acheteur FROM ARTICLES_VENDUS a LEFT JOIN ENCHERES e ON a.no_article = e.no_article WHERE nom_article LIKE ? OR description LIKE ?;";
+	private static final String SELECT_BY_NOM_DESCRIPTION_ID_CATEGORIE = "SELECT a.no_article, a.nom_article, a.description, a.date_debut_encheres, a.date_fin_encheres, a.prix_initial, a.prix_vente, a.no_utilisateur AS vendeur, a.no_categorie, e.date_enchere, e.montant_enchere, e.no_utilisateur AS acheteur FROM ARTICLES_VENDUS a LEFT JOIN ENCHERES e ON a.no_article = e.no_article WHERE nom_article LIKE ? OR description LIKE ? AND no_categorie = ?;";
+	private static final String SELECT_ENCHERE_EN_COURS = "SELECT a.no_article,a.nom_article,a.description,a.date_debut_encheres,a.date_fin_encheres,a.prix_initial,a.prix_vente,a.no_utilisateur AS vendeur,a.no_categorie,e.date_enchere,e.montant_enchere, e.no_utilisateur AS acheteur FROM ARTICLES_VENDUS a LEFT JOIN ENCHERES e on a.no_article=e.no_article  WHERE a.date_debut_encheres < GETDATE() AND a.date_fin_encheres > GETDATE();";
+	private static final String SELECT_ENCHERE_PARTICIPE = "SELECT a.no_article,a.nom_article,a.description,a.date_debut_encheres,a.date_fin_encheres,a.prix_initial,a.prix_vente,a.no_utilisateur AS vendeur,a.no_categorie,e.date_enchere,e.montant_enchere,e.no_utilisateur AS acheteur FROM ARTICLES_VENDUS a LEFT JOIN ENCHERES e on a.no_article=e.no_article WHERE a.date_debut_encheres < GETDATE() AND a.date_fin_encheres > GETDATE() AND e.no_utilisateur = ?;";
+	private static final String SELECT_ENCHERE_GAGNE = "SELECT a.no_article,a.nom_article,a.description,a.date_debut_encheres,a.date_fin_encheres,a.prix_initial,a.prix_vente,a.no_utilisateur AS vendeur,a.no_categorie,e.date_enchere,e.montant_enchere,e.no_utilisateur AS acheteur FROM ARTICLES_VENDUS a LEFT JOIN ENCHERES e on a.no_article=e.no_article WHERE a.date_fin_encheres < GETDATE() AND e.no_utilisateur = ?;";
+	private static final String SELECT_MES_VENTES = "SELECT a.no_article,a.nom_article,a.description,a.date_debut_encheres,a.date_fin_encheres,a.prix_initial,a.prix_vente,a.no_utilisateur AS vendeur,a.no_categorie,e.date_enchere,e.montant_enchere,e.no_utilisateur AS acheteur FROM ARTICLES_VENDUS a LEFT JOIN ENCHERES e on a.no_article=e.no_article WHERE a.no_utilisateur = ? ;";
+	private static final String SELECT_MES_VENTES_NON_COMMENCER = "SELECT a.no_article,a.nom_article,a.description,a.date_debut_encheres,a.date_fin_encheres,a.prix_initial,a.prix_vente,a.no_utilisateur AS vendeur,a.no_categorie,e.date_enchere,e.montant_enchere,e.no_utilisateur AS acheteur FROM ARTICLES_VENDUS a LEFT JOIN ENCHERES e on a.no_article=e.no_article WHERE a.no_utilisateur = ? AND a.date_debut_encheres > GETDATE();";
+	private static final String SELECT_MES_VENTES_EN_COURS = "SELECT a.no_article,a.nom_article,a.description,a.date_debut_encheres,a.date_fin_encheres,a.prix_initial,a.prix_vente,a.no_utilisateur AS vendeur,a.no_categorie,e.date_enchere,e.montant_enchere,e.no_utilisateur AS acheteur FROM ARTICLES_VENDUS a LEFT JOIN ENCHERES e on a.no_article=e.no_article WHERE a.date_debut_encheres < GETDATE() AND a.date_fin_encheres > GETDATE() AND a.no_utilisateur = ?;";
+	private static final String SELECT_MES_VENTES_TERMINEES = "SELECT a.no_article,a.nom_article,a.description,a.date_debut_encheres,a.date_fin_encheres,a.prix_initial,a.prix_vente,a.no_utilisateur AS vendeur,a.no_categorie,e.date_enchere,e.montant_enchere,e.no_utilisateur AS acheteur FROM ARTICLES_VENDUS a LEFT JOIN ENCHERES e on a.no_article=e.no_article WHERE a.no_utilisateur = ? AND a.date_fin_encheres < GETDATE();";
 
+	
 	@Override
 	public void insert(ArticleVendu article) throws BusinessException {
 
@@ -120,9 +130,9 @@ public class ArticleVenduDAOJdbcImpl implements ArticleVenduDAO {
 	public ArticleVendu selectById(int id) throws BusinessException {
 		ArticleVendu articleCourant = new ArticleVendu();
 		try (Connection cnx = ConnectionProvider.getConnection();
-				PreparedStatement smt = cnx.prepareStatement(SELECT_BY_ID);) {
-			smt.setInt(1, id);
-			ResultSet rs = smt.executeQuery();
+				PreparedStatement psmt = cnx.prepareStatement(SELECT_BY_ID);) {
+			psmt.setInt(1, id);
+			ResultSet rs = psmt.executeQuery();
 
 			while (rs.next()) {
 				if (rs.getInt("no_article") != articleCourant.getNoArticle()) {
@@ -143,9 +153,9 @@ public class ArticleVenduDAOJdbcImpl implements ArticleVenduDAO {
 	public List<ArticleVendu> selectByCategorie(int idCategorie) throws BusinessException {
 		List<ArticleVendu> listeArticles = new ArrayList<ArticleVendu>();
 		try (Connection cnx = ConnectionProvider.getConnection();
-				PreparedStatement smt = cnx.prepareStatement(SELECT_BY_ID_CATEGORIE);) {
-			smt.setInt(1, idCategorie);
-			ResultSet rs = smt.executeQuery();
+				PreparedStatement psmt = cnx.prepareStatement(SELECT_BY_ID_CATEGORIE);) {
+			psmt.setInt(1, idCategorie);
+			ResultSet rs = psmt.executeQuery();
 			ArticleVendu articleCourant = new ArticleVendu();
 			while (rs.next()) {
 				if (rs.getInt("no_article") != articleCourant.getNoArticle()) {
@@ -159,6 +169,219 @@ public class ArticleVenduDAOJdbcImpl implements ArticleVenduDAO {
 			e.printStackTrace();
 			BusinessException be = new BusinessException();
 			be.ajouterErreur(CodesResultatDAL.SELECT_BY_ID_CATEGORIE_ERREUR);
+			throw be;
+		}
+	}
+	
+	@Override
+	public List<ArticleVendu> selectByNomDescription(String string) throws BusinessException {
+		List<ArticleVendu> listeArticles = new ArrayList<ArticleVendu>();
+		try (Connection cnx = ConnectionProvider.getConnection();
+				PreparedStatement psmt = cnx.prepareStatement(SELECT_BY_NOM_DESCRIPTION);) {
+			psmt.setString(1, "%" + string + "%");
+			psmt.setString(2, "%" + string + "%");
+			ResultSet rs = psmt.executeQuery();
+			ArticleVendu articleCourant = new ArticleVendu();
+			while (rs.next()) {
+				if (rs.getInt("no_article") != articleCourant.getNoArticle()) {
+					articleCourant = mappingArticleVendu(rs);
+					listeArticles.add(articleCourant);
+				}
+			}
+
+			return listeArticles;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			BusinessException be = new BusinessException();
+			be.ajouterErreur(CodesResultatDAL.SELECT_BY_ID_CATEGORIE_ERREUR);
+			throw be;
+		}
+	}
+	
+	@Override
+	public List<ArticleVendu> selectByNomDescriptionCategorie(String string, int idCategorie) throws BusinessException {
+		List<ArticleVendu> listeArticles = new ArrayList<ArticleVendu>();
+		try (Connection cnx = ConnectionProvider.getConnection();
+				PreparedStatement psmt = cnx.prepareStatement(SELECT_BY_NOM_DESCRIPTION_ID_CATEGORIE);) {
+			psmt.setString(1, "%" + string + "%");
+			psmt.setString(2, "%" + string + "%");
+			psmt.setInt(3, idCategorie);
+			ResultSet rs = psmt.executeQuery();
+			ArticleVendu articleCourant = new ArticleVendu();
+			while (rs.next()) {
+				if (rs.getInt("no_article") != articleCourant.getNoArticle()) {
+					articleCourant = mappingArticleVendu(rs);
+					listeArticles.add(articleCourant);
+				}
+			}
+
+			return listeArticles;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			BusinessException be = new BusinessException();
+			be.ajouterErreur(CodesResultatDAL.SELECT_BY_ID_CATEGORIE_ERREUR);
+			throw be;
+		}
+	}
+	
+	
+	@Override
+	public List<ArticleVendu> selectEncheresEnCours() throws BusinessException {
+		List<ArticleVendu> listeArticles = new ArrayList<ArticleVendu>();
+		try (Connection cnx = ConnectionProvider.getConnection(); Statement smt = cnx.createStatement();) {
+			ResultSet rs = smt.executeQuery(SELECT_ENCHERE_EN_COURS);
+			ArticleVendu articleCourant = new ArticleVendu();
+			while (rs.next()) {
+				if (rs.getInt("no_article") != articleCourant.getNoArticle()) {
+					articleCourant = mappingArticleVendu(rs);
+					listeArticles.add(articleCourant);
+				}
+			}
+
+			return listeArticles;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			BusinessException be = new BusinessException();
+			be.ajouterErreur(CodesResultatDAL.SELECT_ENCHERE_EN_COURS_ECHEC);
+			throw be;
+		}
+	}
+	
+	
+	@Override
+	public List<ArticleVendu> selectEncheresParticipe(Utilisateur utilisateur) throws BusinessException {
+		List<ArticleVendu> listeArticles = new ArrayList<ArticleVendu>();
+		try (Connection cnx = ConnectionProvider.getConnection();
+			PreparedStatement psmt = cnx.prepareStatement(SELECT_ENCHERE_PARTICIPE);) {
+			psmt.setInt(1, utilisateur.getNoUtilisateur());
+			ResultSet rs = psmt.executeQuery();
+
+			while (rs.next()) {
+				listeArticles.add(mappingArticleVendu(rs));
+			}
+
+			return listeArticles;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			BusinessException be = new BusinessException();
+			be.ajouterErreur(CodesResultatDAL.SELECT_ENCHERE_PARTICIPE_ECHEC);
+			throw be;
+		}
+	}
+	
+	
+	@Override
+	public List<ArticleVendu> selectEncheresGagne(Utilisateur utilisateur) throws BusinessException {
+		List<ArticleVendu> listeArticles = new ArrayList<ArticleVendu>();
+		try (Connection cnx = ConnectionProvider.getConnection();
+			PreparedStatement psmt = cnx.prepareStatement(SELECT_ENCHERE_GAGNE);) {
+			psmt.setInt(1, utilisateur.getNoUtilisateur());
+			ResultSet rs = psmt.executeQuery();
+
+			while (rs.next()) {
+				listeArticles.add(mappingArticleVendu(rs));
+			}
+
+			return listeArticles;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			BusinessException be = new BusinessException();
+			be.ajouterErreur(CodesResultatDAL.SELECT_ENCHERE_GAGNE_ECHEC);
+			throw be;
+		}
+	}
+	@Override
+	public List<ArticleVendu> selectVentes(Utilisateur utilisateur) throws BusinessException {
+		List<ArticleVendu> listeArticles = new ArrayList<ArticleVendu>();
+		try (Connection cnx = ConnectionProvider.getConnection();
+				PreparedStatement psmt = cnx.prepareStatement(SELECT_MES_VENTES);) {
+			psmt.setInt(1, utilisateur.getNoUtilisateur());
+			ResultSet rs = psmt.executeQuery();
+			ArticleVendu articleCourant = new ArticleVendu();
+			while (rs.next()) {
+				if (rs.getInt("no_article") != articleCourant.getNoArticle()) {
+					articleCourant = mappingArticleVendu(rs);
+					listeArticles.add(articleCourant);
+				}
+			}
+
+			return listeArticles;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			BusinessException be = new BusinessException();
+			be.ajouterErreur(CodesResultatDAL.SELECT_MES_VENTES_ERREUR);
+			throw be;
+		}
+	}
+
+	@Override
+	public List<ArticleVendu> selectVentesNonCommencees(Utilisateur utilisateur) throws BusinessException {
+		List<ArticleVendu> listeArticles = new ArrayList<ArticleVendu>();
+		try (Connection cnx = ConnectionProvider.getConnection();
+				PreparedStatement psmt = cnx.prepareStatement(SELECT_MES_VENTES_NON_COMMENCER);) {
+			psmt.setInt(1, utilisateur.getNoUtilisateur());
+			ResultSet rs = psmt.executeQuery();
+			ArticleVendu articleCourant = new ArticleVendu();
+			while (rs.next()) {
+				if (rs.getInt("no_article") != articleCourant.getNoArticle()) {
+					articleCourant = mappingArticleVendu(rs);
+					listeArticles.add(articleCourant);
+				}
+			}
+
+			return listeArticles;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			BusinessException be = new BusinessException();
+			be.ajouterErreur(CodesResultatDAL.SELECT_VENTES_NON_COMMENCER_ERREUR);
+			throw be;
+		}
+	}
+
+	@Override
+	public List<ArticleVendu> selectVentesEnCours(Utilisateur utilisateur) throws BusinessException {
+		List<ArticleVendu> listeArticles = new ArrayList<ArticleVendu>();
+		try (Connection cnx = ConnectionProvider.getConnection();
+				PreparedStatement psmt = cnx.prepareStatement(SELECT_MES_VENTES_EN_COURS);) {
+			psmt.setInt(1, utilisateur.getNoUtilisateur());
+			ResultSet rs = psmt.executeQuery();
+			ArticleVendu articleCourant = new ArticleVendu();
+			while (rs.next()) {
+				if (rs.getInt("no_article") != articleCourant.getNoArticle()) {
+					articleCourant = mappingArticleVendu(rs);
+					listeArticles.add(articleCourant);
+				}
+			}
+
+			return listeArticles;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			BusinessException be = new BusinessException();
+			be.ajouterErreur(CodesResultatDAL.SELECT_MES_VENTES_EN_COURS_ERREUR);
+			throw be;
+		}
+	}
+
+	@Override
+	public List<ArticleVendu> selectVenteTerminees(Utilisateur utilisateur) throws BusinessException {
+		List<ArticleVendu> listeArticles = new ArrayList<ArticleVendu>();
+		try (Connection cnx = ConnectionProvider.getConnection();
+				PreparedStatement psmt = cnx.prepareStatement(SELECT_MES_VENTES_TERMINEES);) {
+			psmt.setInt(1, utilisateur.getNoUtilisateur());
+			ResultSet rs = psmt.executeQuery();
+			ArticleVendu articleCourant = new ArticleVendu();
+			while (rs.next()) {
+				if (rs.getInt("no_article") != articleCourant.getNoArticle()) {
+					articleCourant = mappingArticleVendu(rs);
+					listeArticles.add(articleCourant);
+				}
+			}
+
+			return listeArticles;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			BusinessException be = new BusinessException();
+			be.ajouterErreur(CodesResultatDAL.SELECT_MES_VENTES_TERMINEES_ERREUR);
 			throw be;
 		}
 	}
@@ -189,5 +412,6 @@ public class ArticleVenduDAOJdbcImpl implements ArticleVenduDAO {
 		
 		return newArticleVendu;
 	}
+
 
 }

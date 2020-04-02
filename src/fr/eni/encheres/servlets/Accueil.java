@@ -62,24 +62,48 @@ public class Accueil extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String nomRechercher = request.getParameter("nomRechercher");
-		if (!request.getParameter("categorieChoisie").isEmpty()) {
-			int idCategorie = Integer.parseInt(request.getParameter("categorieChoisie"));
-			
-			ArticleVenduManager articleVenduManager = new ArticleVenduManager();
-			
+		String nomRechercher = request.getParameter("nomRechercher").trim();
+		String categorie = request.getParameter("categorieChoisie").trim();
+		
+		ArticleVenduManager articleVenduManager = new ArticleVenduManager();
+		
+		//Si le champ nom est vide
+		if (nomRechercher.isEmpty()) {
+			//On regarde si le champ categorie est vide
+			if (categorie.isEmpty()) {
+				//Si lui aussi est vide on fait rien
+				//Sinon c'est qu'on recherche que par categorie
+			}else {
+				int idCategorie = Integer.parseInt(categorie);
+				try {
+					List<ArticleVendu> listArticle = articleVenduManager.selectionnerArticleParCategorie(idCategorie);
+					request.setAttribute("listArticle", listArticle);
+				} catch (BusinessException e) {
+					e.printStackTrace();
+				}
+			}
+		//Sinon si le champ nom n'est pas vide on regarde si on as specifier en plus une categorie
+		}else if (!nomRechercher.isEmpty() && categorie.isEmpty()) {
+			//Si il est vide c'est qu'on recherche que par le nom et la description
 			try {
-				List<ArticleVendu> listArticle = articleVenduManager.selectionnerArticleParCategorie(idCategorie);
+				List<ArticleVendu> listArticle = articleVenduManager.selectionnerArticleParNomEtDescription(nomRechercher);
 				request.setAttribute("listArticle", listArticle);
 			} catch (BusinessException e) {
 				e.printStackTrace();
 			}
-			RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/jsp/accueil.jsp");
-			rd.forward(request, response);
 		}else {
-			doGet(request, response);
+			//Sinon c'est qu'on recherche par le nom la description et la categorie
+			int idCategorie = Integer.parseInt(categorie);
+			try {
+				List<ArticleVendu> listArticle = articleVenduManager.selectionnerArticleParNomDescriptionEtCategorie(nomRechercher, idCategorie);
+				request.setAttribute("listArticle", listArticle);
+			} catch (BusinessException e) {
+				e.printStackTrace();
+			}
 		}
 		
+		RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/jsp/accueil.jsp");
+		rd.forward(request, response);
 		
 	}
 

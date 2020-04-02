@@ -26,4 +26,23 @@ public abstract class CodesResultatDAL {
 
 	public static final int SELECT_BY_ID_CATEGORIE_ERREUR = 10008;
 
+	public static final int SELECT_ENCHERE_EN_COURS_ECHEC = 10009;
+	
+	public static final int SELECT_ENCHERE_PARTICIPE_ECHEC = 10010;
+
+	public static final int SELECT_ENCHERE_GAGNE_ECHEC = 10011;
+
+	public static final int SELECT_MES_VENTES_ERREUR = 10012;
+
+	public static final int SELECT_VENTES_NON_COMMENCER_ERREUR = 10013;
+
+	public static final int SELECT_MES_VENTES_EN_COURS_ERREUR = 10014;
+
+	public static final int SELECT_MES_VENTES_TERMINEES_ERREUR = 10015;
+
+
+
+
+
+
 }
