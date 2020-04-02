@@ -28,6 +28,7 @@ public class Connexion extends HttpServlet {
 	 *      response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		RequestDispatcher rd = null;
 		// Quand j'arrive sur la page je recupere les cookies
 		Cookie[] cookies = request.getCookies();
 		if (cookies.length > 1) {
@@ -48,11 +49,11 @@ public class Connexion extends HttpServlet {
 			/* Récupération de la session depuis la requête */
 			request.getSession().setAttribute("sessionUtilisateur", utilisateur);
 			// Si tout se passe bien, je vais vers la page de connection:
-			RequestDispatcher rd = request.getRequestDispatcher("/Accueil");
-			rd.forward(request, response);
+			 response.sendRedirect("./Accueil");
+			
 		}else {
-			RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/jsp/connexion.jsp");
-			rd.forward(request, response);
+			 rd = request.getRequestDispatcher("/WEB-INF/jsp/connexion.jsp");
+			 rd.forward(request, response);
 		}
 	}
 
@@ -63,12 +64,12 @@ public class Connexion extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		String email = request.getParameter("email");
-		String mot_de_passe = request.getParameter("motdepasse");
+		String motDePasse = request.getParameter("motdepasse");
 		String checkbox = request.getParameter("souvenir");
 
 		List<Integer> listeCodesErreur = new ArrayList<>();
 
-		Utilisateur utilisateur = connecterUtilisateur(email, mot_de_passe, listeCodesErreur);
+		Utilisateur utilisateur = connecterUtilisateur(email, motDePasse, listeCodesErreur);
 
 		// Si il y a des erreurs dans la liste
 		if (listeCodesErreur.size() > 0) {
@@ -82,7 +83,7 @@ public class Connexion extends HttpServlet {
 			// Je créé un cookie avec ses identifiants
 			if (checkbox != null) {
 				Cookie cookieIdentifiant = new Cookie("identifiant", email);
-				Cookie cookieMDP = new Cookie("mdp", mot_de_passe);
+				Cookie cookieMDP = new Cookie("mdp", motDePasse);
 				cookieIdentifiant.setMaxAge(86400);
 				cookieMDP.setMaxAge(86400);
 				response.addCookie(cookieIdentifiant);

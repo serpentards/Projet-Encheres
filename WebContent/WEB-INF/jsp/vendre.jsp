@@ -21,7 +21,7 @@
 			</ul>
 		</div>
 	</c:if>
-	<form action="" method="post" >
+	<form action="" method="post">
 		<label>Article : </label> <input type="text" id="article" name="article" required /><br>
 		<label>Description : </label><textarea class="form-control" name="description" required></textarea><br>
 		<label>Categorie : </label><select name="categorieChoisie">

@@ -38,5 +38,13 @@ public abstract class CodesResultatBLL {
 	public static final int DATE_ERREUR = 20015;
 
 	public static final int PRIX_ARTICLE_INCORRECT = 20016;
+
+	public static final int MONTANT_ENCHERE_ERREUR = 20017;
+
+	public static final int CREDIT_ZERO = 20018;
+
+	public static final int CREDIT_INSUFFISANT = 20019;
+
+	public static final int ETAT_CONNECTER_ERREUR = 20020;
 	
 }

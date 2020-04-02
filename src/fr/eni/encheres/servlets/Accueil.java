@@ -49,7 +49,7 @@ public class Accueil extends HttpServlet {
 		
 		try {
 			List<ArticleVendu> listArticle = articleVenduManager.selectionnerTousLesArticles();
-			request.setAttribute("listArticle", listArticle);
+			request.getSession().setAttribute("listArticle", listArticle);
 		} catch (BusinessException e) {
 			e.printStackTrace();
 		}

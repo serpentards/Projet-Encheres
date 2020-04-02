@@ -15,6 +15,9 @@ public abstract class CodesResultatServlets {
 	
 	public static final int CATEGORIE_INEXISTANTE = 30004;
 
+	public static final int MONTANT_ENCHERE_VIDE = 30005;
+
+
 	
 	
 }

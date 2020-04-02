@@ -1,3 +1,4 @@
+<%@page import="fr.eni.encheres.messages.LecteurMessage"%>
 <%@page import="fr.eni.encheres.bo.Categorie"%>
 <%@page import="java.util.List"%>
 <%@page import="fr.eni.encheres.bo.Utilisateur"%>
@@ -23,6 +24,17 @@
 		</p>
 		</c:otherwise>
 	</c:choose>
+	<!-- Lecture des messages d'erreur -->
+	<c:if test="${ !empty listeCodesErreur }">
+		<div class="alert alert-danger" role="alert">
+			<strong>Erreur!</strong>
+			<ul>
+				<c:forEach items="${ listeCodesErreur }" var="code">
+					<li><%=LecteurMessage.getMessageErreur((int) pageContext.getAttribute("code"))%></li>
+				</c:forEach>
+			</ul>
+		</div>
+	</c:if>
 
 	<h1 align="center">Liste des enchères</h1>
 	
@@ -53,7 +65,7 @@
 				<c:forEach items="${ listArticle }" var="article">
 					<tr>
 						<td>
-						<a href="<c:url value="/AfficherArticle"/>?id=${ article.noArticle }">${ article.nomArticle }</a>
+						<a href="<c:url value="/AfficherArticle"/>?id=${ article.noArticle }">${ article.nomArticle }</a><br>
 						<c:choose>
 							<c:when test="${ article.enchere.montantEnchere != null }">
 								Prix actuel : ${ article.enchere.montantEnchere }<br>
@@ -61,7 +73,9 @@
 							<c:otherwise>
 								Mise a prix : ${ article.miseAPrix }<br>
 							</c:otherwise>
-						</c:choose> Fin de l'enchere : ${ article.dateFinEncheres }<br>
+						</c:choose> Fin de l'enchere : 
+						<fmt:parseDate value="${ article.dateFinEncheres }" pattern="yyyy-MM-dd'T'HH:mm" var="parsedDateTime" type="both" />
+						<fmt:formatDate pattern="dd/MM/yyyy HH:mm" value="${ parsedDateTime }" /><br>
 						</td>
 					</tr>
 				</c:forEach>

@@ -36,13 +36,10 @@
 		
 
 	<div class="contenu">
-		<a href="<%=request.getContextPath()%>/ModifierProfil"> 
-		<input type="button" class="btn btn-primary" value="Modifier" />
-		</a>
+		<a href="<c:url value="/ModifierProfil"/>"><input type="button" value="Modifier"></a>
 	</div>
 	<div class="contenu">
-		<a href="<%=request.getContextPath()%>/Accueil"> <input
-			type="button" class="btn btn-primary" value="Annuler" /></a>
+		<a href="<c:url value="/Accueil"/>" ><input type="button" value="Annuler"></a>
 	</div> 
 	<p class="mt-5 mb-3 text-muted">© BollobArt</p>
 	

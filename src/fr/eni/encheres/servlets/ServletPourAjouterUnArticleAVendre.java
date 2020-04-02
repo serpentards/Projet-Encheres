@@ -96,6 +96,7 @@ public class ServletPourAjouterUnArticleAVendre extends HttpServlet {
         String codePostal = request.getParameter("codePostal");
         String ville = request.getParameter("ville");
         
+        //Remplissage automatique du lieu de retrait si aucun n'est specifier
         if (rue.isEmpty()) {
 			rue = vendeur.getRue();
 		}
@@ -108,7 +109,7 @@ public class ServletPourAjouterUnArticleAVendre extends HttpServlet {
         
         lieuRetrait = new Retrait(rue, codePostal, ville);
         
-        
+        //Formatage des dates
         try
         {
         	dateDebutEncheres = LocalDateTime.parse(request.getParameter("dateDebut"));
