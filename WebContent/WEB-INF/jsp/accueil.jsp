@@ -7,32 +7,14 @@
 <head>
 <meta charset="UTF-8">
 <title>Acceuil</title>
+<%@ include file="header.jsp" %>
 </head>
 <body>
-
-<div class="btn-group" role="group" aria-label="Basic example">
-	<a href="<c:url value="/MesEncheres"/>"><button type="button" class="btn btn-secondary" >Enchères</button></a>
-	<a href="<c:url value="/AjoutVente"/>"><button type="button" class="btn btn-secondary" >Vendre un article</button></a>
-	<a href="<c:url value="/AfficherProfil"/>"><button type="button" class="btn btn-secondary" >Mon profil</button></a>
-	<a href="<c:url value="/Deconnexion"/>"><button type="button" class="btn btn-secondary" >Déconnexion</button></a>
-</div>
-	<c:choose>
-		<c:when test="${ !empty sessionUtilisateur }">
-		<p align="right">
-			<a href="<c:url value="/MesEncheres"/>">Enchères</a>
-			<a href="<c:url value="/AjoutVente"/>" >Vendre un article</a>
-			<a href="<c:url value="/AfficherProfil"/>" >Mon profil</a>
-			<a href="<c:url value="/Deconnexion"/>" >Déconnexion</a>
-		</p>
-		</c:when>
-		<c:otherwise>
-		<p align="right">
-			<a href="<c:url value="/Connexion"/>">S'inscrire - Se connecter</a>
-		</p>
-		</c:otherwise>
-	</c:choose>
+<div class="container">
+	
 	<!-- Lecture des messages d'erreur -->
 	<c:if test="${ !empty listeCodesErreur }">
+	<div class="row">
 		<div class="alert alert-danger" role="alert">
 			<strong>Erreur!</strong>
 			<ul>
@@ -41,11 +23,18 @@
 				</c:forEach>
 			</ul>
 		</div>
+	</div>
 	</c:if>
-
-	<h1 align="center">Liste des enchères</h1>
 	
-	<h2 align="left">Filtres :</h2>
+	<div class="row justify-content-md-center">
+		<h1>Liste des enchères</h1>
+	</div>
+	
+	<div class="row">
+		<h2>Filtres :</h2>
+	</div>
+	
+	<div class="row">
 		<form action="./Accueil" method="post">
 			<input type="text" placeholder="Le nom de l'article contient" name="nomRechercher">
 			<label for="categorieChoisie">Categorie : </label>
@@ -57,8 +46,10 @@
 			</select><br>
 			<input type="submit" value="Rechercher">
 		</form>
+	</div>
+	
 
-
+	<div class="row">
 	<!-- Lecture de la liste d'article -->
 	<c:if test="${ !empty listArticle }">
 		<table class="table">
@@ -95,6 +86,11 @@
 			</tbody>
 		</table>
 	</c:if>
-		<p class="mt-5 mb-3 text-muted">© BollobArt</p>
+	</div>
+	
+	<div class="row">
+		© BollobArt
+	</div>
+</div>
 </body>
 </html>

@@ -4,6 +4,7 @@
 <link href="css/_list-group.css" rel="stylesheet">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Mes enchères</title>
+<%@ include file="header.jsp" %>
 </head>
 <body>
 <div class="row">

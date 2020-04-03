@@ -5,6 +5,7 @@
 <head>
 <meta charset="utf-8" />
 <title>Inscription</title>
+<%@ include file="header.jsp" %>
 </head>
 <body>
 	<h1 align="center">Mon profil</h1>

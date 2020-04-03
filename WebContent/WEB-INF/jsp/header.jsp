@@ -13,37 +13,37 @@
 <nav class="navbar navbar-light bg-light  fixed-top" > 
 	
 		  <a class="navbar-brand" href="<%=request.getContextPath()%>/Accueil">
-				<img src="/ENI-Encheres-1/images/logo_eni_enchere_fond_blanc.png" width="100" height="100" class="d-inline-block align-top" alt="">
+				<img src="/Projet-Encheres/images/logo_eni_enchere_fond_blanc.png" width="100" height="100" class="d-inline-block align-top" alt="">
 		    <div class="d-flex align-items-center">
 		    ENI Enchères
 		    </div>
 		  </a>
 		
-	  <div class="d-flex align-items-start flex-column bd-highlight mb-3" id="navbarResponsive">
-		  <c:choose>
-				<c:when test="${ !empty sessionUtilisateur }">
-				<p align="right">
-				<a href="<%=request.getContextPath()%>/MesEncheres" >Enchères</a>
-				<a href="<%=request.getContextPath()%>/AjoutVente" >Vendre un article</a>
-				<a href="<%=request.getContextPath()%>/AfficherProfil" >Mon profil</a>
-				<a href="<%=request.getContextPath()%>/Deconnexion" >Déconnexion</a>
-				</p>
-				</c:when>
-				<c:otherwise>
-				<p align="right">
-				<a href="<%=request.getContextPath()%>/Connexion">S'inscrire - Se connecter</a>
-				</p>
-				</c:otherwise>
-			</c:choose>
-		</div>
+	  <!-- <div class="d-flex align-items-start flex-column bd-highlight mb-3" id="navbarResponsive"> -->
+		  <div class="row justify-content-end">
+	<c:choose>
+		<c:when test="${ !empty sessionUtilisateur }">
+			<div class="btn-group" role="group" aria-label="Basic example" align="right">
+				<button type="button" class="btn btn-secondary" onClick="javascript:location.href='<c:url value="/MesEncheres"/>'">Enchères</button>
+				<button type="button" class="btn btn-secondary" onClick="javascript:location.href='<c:url value="/AjoutVente"/>'">Vendre un article</button>
+				<button type="button" class="btn btn-secondary" onClick="javascript:location.href='<c:url value="/AfficherProfil"/>'" >Mon profil</button>
+				<button type="button" class="btn btn-secondary" onClick="javascript:location.href='<c:url value="/Deconnexion"/>'">Déconnexion</button>
+			</div>
+		</c:when>
+		<c:otherwise>
+			<button type="button" class="btn btn-secondary" onClick="javascript:location.href='<c:url value="/Connexion"/>'">S'inscrire - Se connecter</button>
+		</c:otherwise>
+	</c:choose>
+	</div>
+		<!-- </div> -->
 
 </nav> 
-<!-- <br/>
+<br/>
 <br/>
 <br/>
 <br/>
 <br/>
 <br/> 
-<br/>  -->
+<br/>
 </body>
 </html>

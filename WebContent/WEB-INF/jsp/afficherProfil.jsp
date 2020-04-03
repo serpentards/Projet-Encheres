@@ -4,6 +4,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Mon Compte</title>
+<%@ include file="header.jsp" %>
 </head>
 <body>
 		<label for="pseudo">Pseudo : </label> 
