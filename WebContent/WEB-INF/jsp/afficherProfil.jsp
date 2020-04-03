@@ -35,10 +35,12 @@
 		<input type="number" id="credit" name="credit" value="${ sessionUtilisateur.credit }" disabled="disabled"/> <br /> 
 		
 		
-
-	<div class="contenu">
-		<a href="<c:url value="/ModifierProfil"/>"><input type="button" value="Modifier"></a>
-	</div>
+	<c:if test="${ valider != 1 }">
+		<div class="contenu">
+			<a href="<c:url value="/ModifierProfil"/>"><input type="button" value="Modifier"></a>
+		</div>
+	</c:if>
+	
 	<div class="contenu">
 		<a href="<c:url value="/Accueil"/>" ><input type="button" value="Annuler"></a>
 	</div> 

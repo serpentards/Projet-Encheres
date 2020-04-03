@@ -69,8 +69,7 @@ public class Inscription extends HttpServlet {
 			// Et je le connecte
 			request.getSession().setAttribute("sessionUtilisateur",	u);
 			// Si tout se passe bien, je vais vers la page d'Acceuil:
-			RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/jsp/accueil.jsp");
-			rd.forward(request, response);
+			response.sendRedirect("./Accueil");
 
 		} catch (BusinessException e) {
 			// Sinon je retourne à la page d'inscription pour indiquer les problèmes:

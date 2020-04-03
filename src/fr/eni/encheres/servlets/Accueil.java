@@ -48,7 +48,7 @@ public class Accueil extends HttpServlet {
 		ArticleVenduManager articleVenduManager = new ArticleVenduManager();
 		
 		try {
-			List<ArticleVendu> listArticle = articleVenduManager.selectionnerTousLesArticles();
+			List<ArticleVendu> listArticle = articleVenduManager.selectionnerEncheresEnCours();
 			request.getSession().setAttribute("listArticle", listArticle);
 		} catch (BusinessException e) {
 			e.printStackTrace();

@@ -62,7 +62,7 @@
  	</form>
 	<div class="contenu">
 		<a href="<%=request.getContextPath()%>/Supprimer"> <input
-			type="button" class="btn btn-primary" value="Supprimer compte" onclick="return confirm('Etes-vous sûr de vouloir supprimer votre compte ?')"/></a>
+			type="button" class="btn btn-secondary" value="Supprimer compte" onclick="return confirm('Etes-vous sûr de vouloir supprimer votre compte ?')"/></a>
 	</div>
 	<p class="mt-5 mb-3 text-muted">© BollobArt</p>
 	

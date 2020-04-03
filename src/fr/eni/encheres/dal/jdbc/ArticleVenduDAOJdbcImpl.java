@@ -1,7 +1,6 @@
 package fr.eni.encheres.dal.jdbc;
 
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -30,7 +29,7 @@ public class ArticleVenduDAOJdbcImpl implements ArticleVenduDAO {
 	private static final String SELECT_BY_ID = "SELECT a.no_article,a.nom_article,a.description,a.date_debut_encheres,a.date_fin_encheres,a.prix_initial,a.prix_vente,a.no_utilisateur AS vendeur,a.no_categorie,e.date_enchere,e.montant_enchere,e.no_utilisateur AS acheteur FROM ARTICLES_VENDUS a LEFT JOIN ENCHERES e on a.no_article=e.no_article WHERE a.no_article = ?;";
 	private static final String SELECT_BY_ID_CATEGORIE = "SELECT a.no_article,a.nom_article,a.description,a.date_debut_encheres,a.date_fin_encheres,a.prix_initial,a.prix_vente,a.no_utilisateur AS vendeur,a.no_categorie,e.date_enchere,e.montant_enchere,e.no_utilisateur AS acheteur FROM ARTICLES_VENDUS a LEFT JOIN ENCHERES e on a.no_article=e.no_article WHERE a.no_categorie = ?;";
 	private static final String SELECT_BY_NOM_DESCRIPTION = "SELECT a.no_article, a.nom_article, a.description, a.date_debut_encheres, a.date_fin_encheres, a.prix_initial, a.prix_vente, a.no_utilisateur AS vendeur, a.no_categorie, e.date_enchere, e.montant_enchere, e.no_utilisateur AS acheteur FROM ARTICLES_VENDUS a LEFT JOIN ENCHERES e ON a.no_article = e.no_article WHERE nom_article LIKE ? OR description LIKE ?;";
-	private static final String SELECT_BY_NOM_DESCRIPTION_ID_CATEGORIE = "SELECT a.no_article, a.nom_article, a.description, a.date_debut_encheres, a.date_fin_encheres, a.prix_initial, a.prix_vente, a.no_utilisateur AS vendeur, a.no_categorie, e.date_enchere, e.montant_enchere, e.no_utilisateur AS acheteur FROM ARTICLES_VENDUS a LEFT JOIN ENCHERES e ON a.no_article = e.no_article WHERE nom_article LIKE ? OR description LIKE ? AND no_categorie = ?;";
+	private static final String SELECT_BY_NOM_DESCRIPTION_ID_CATEGORIE = "SELECT a.no_article, a.nom_article, a.description, a.date_debut_encheres, a.date_fin_encheres, a.prix_initial, a.prix_vente, a.no_utilisateur AS vendeur, a.no_categorie, e.date_enchere, e.montant_enchere, e.no_utilisateur AS acheteur FROM ARTICLES_VENDUS a LEFT JOIN ENCHERES e ON a.no_article = e.no_article WHERE (nom_article LIKE ? OR description LIKE ?) AND no_categorie = ?;";
 	private static final String SELECT_ENCHERE_EN_COURS = "SELECT a.no_article,a.nom_article,a.description,a.date_debut_encheres,a.date_fin_encheres,a.prix_initial,a.prix_vente,a.no_utilisateur AS vendeur,a.no_categorie,e.date_enchere,e.montant_enchere, e.no_utilisateur AS acheteur FROM ARTICLES_VENDUS a LEFT JOIN ENCHERES e on a.no_article=e.no_article  WHERE a.date_debut_encheres < GETDATE() AND a.date_fin_encheres > GETDATE();";
 	private static final String SELECT_ENCHERE_PARTICIPE = "SELECT a.no_article,a.nom_article,a.description,a.date_debut_encheres,a.date_fin_encheres,a.prix_initial,a.prix_vente,a.no_utilisateur AS vendeur,a.no_categorie,e.date_enchere,e.montant_enchere,e.no_utilisateur AS acheteur FROM ARTICLES_VENDUS a LEFT JOIN ENCHERES e on a.no_article=e.no_article WHERE a.date_debut_encheres < GETDATE() AND a.date_fin_encheres > GETDATE() AND e.no_utilisateur = ?;";
 	private static final String SELECT_ENCHERE_GAGNE = "SELECT a.no_article,a.nom_article,a.description,a.date_debut_encheres,a.date_fin_encheres,a.prix_initial,a.prix_vente,a.no_utilisateur AS vendeur,a.no_categorie,e.date_enchere,e.montant_enchere,e.no_utilisateur AS acheteur FROM ARTICLES_VENDUS a LEFT JOIN ENCHERES e on a.no_article=e.no_article WHERE a.date_fin_encheres < GETDATE() AND e.no_utilisateur = ?;";
@@ -38,6 +37,8 @@ public class ArticleVenduDAOJdbcImpl implements ArticleVenduDAO {
 	private static final String SELECT_MES_VENTES_NON_COMMENCER = "SELECT a.no_article,a.nom_article,a.description,a.date_debut_encheres,a.date_fin_encheres,a.prix_initial,a.prix_vente,a.no_utilisateur AS vendeur,a.no_categorie,e.date_enchere,e.montant_enchere,e.no_utilisateur AS acheteur FROM ARTICLES_VENDUS a LEFT JOIN ENCHERES e on a.no_article=e.no_article WHERE a.no_utilisateur = ? AND a.date_debut_encheres > GETDATE();";
 	private static final String SELECT_MES_VENTES_EN_COURS = "SELECT a.no_article,a.nom_article,a.description,a.date_debut_encheres,a.date_fin_encheres,a.prix_initial,a.prix_vente,a.no_utilisateur AS vendeur,a.no_categorie,e.date_enchere,e.montant_enchere,e.no_utilisateur AS acheteur FROM ARTICLES_VENDUS a LEFT JOIN ENCHERES e on a.no_article=e.no_article WHERE a.date_debut_encheres < GETDATE() AND a.date_fin_encheres > GETDATE() AND a.no_utilisateur = ?;";
 	private static final String SELECT_MES_VENTES_TERMINEES = "SELECT a.no_article,a.nom_article,a.description,a.date_debut_encheres,a.date_fin_encheres,a.prix_initial,a.prix_vente,a.no_utilisateur AS vendeur,a.no_categorie,e.date_enchere,e.montant_enchere,e.no_utilisateur AS acheteur FROM ARTICLES_VENDUS a LEFT JOIN ENCHERES e on a.no_article=e.no_article WHERE a.no_utilisateur = ? AND a.date_fin_encheres < GETDATE();";
+	private static final String UPDATE_ARTICLE = "UPDATE ARTICLES_VENDUS SET nom_article = ?, description = ?, date_debut_encheres = ?, date_fin_encheres = ?, prix_initial = ?, no_categorie = ? WHERE no_article = ?;";
+	private static final String UPDATE_RETRAIT = "UPDATE RETRAITS SET rue = ?, code_postal= ?, ville= ? WHERE no_article = ?;";
 
 	
 	@Override
@@ -104,6 +105,65 @@ public class ArticleVenduDAOJdbcImpl implements ArticleVenduDAO {
 		}
 	}
 
+	@Override
+	public ArticleVendu update(ArticleVendu article) throws BusinessException {
+		Connection cnx = null;
+		BusinessException be = new BusinessException();
+		
+		try {
+			cnx = ConnectionProvider.getConnection();
+			PreparedStatement psmt = cnx.prepareStatement(UPDATE_ARTICLE);
+			cnx.setAutoCommit(false);
+
+			psmt.setString(1, article.getNomArticle());
+			psmt.setString(2, article.getDescription());
+			psmt.setTimestamp(3, Timestamp.valueOf(article.getDateDebutEncheres()));
+			psmt.setTimestamp(4, Timestamp.valueOf(article.getDateFinEncheres()));
+			psmt.setInt(5, article.getMiseAPrix());
+			psmt.setInt(6, article.getCategorieArticle().getNoCategorie());
+			psmt.setInt(7, article.getNoArticle());
+			int nbEnr = psmt.executeUpdate();
+			
+			if (nbEnr != 1) {
+				be.ajouterErreur(CodesResultatDAL.UPDATE_ARTICLE_ECHEC);
+			}
+			psmt.close();
+			psmt = cnx.prepareStatement(UPDATE_RETRAIT);
+
+			psmt.setString(1, article.getLieuRetrait().getRue());
+			psmt.setString(2, article.getLieuRetrait().getCode_postal());
+			psmt.setString(3, article.getLieuRetrait().getVille());
+			psmt.setInt(4, article.getNoArticle());
+			nbEnr = psmt.executeUpdate();
+			
+			if (nbEnr != 1) {
+				be.ajouterErreur(CodesResultatDAL.UPDATE_RETRAIT_ECHEC);
+			}
+			psmt.close();
+			cnx.commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+			be.ajouterErreur(CodesResultatDAL.UPDATE_ARTICLE_ET_RETRAIT_ECHEC);
+
+			try {
+				cnx.rollback();
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
+		} finally {
+			try {
+				cnx.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			if (be.hasErreurs()) {
+				throw be;
+			}
+		}
+
+		return article;
+	}
+	
 	@Override
 	public List<ArticleVendu> select() throws BusinessException {
 		List<ArticleVendu> listeArticles = new ArrayList<ArticleVendu>();

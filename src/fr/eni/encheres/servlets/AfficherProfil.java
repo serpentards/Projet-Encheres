@@ -32,6 +32,7 @@ public class AfficherProfil extends HttpServlet {
 				UtilisateurManager utilisateurManager = new UtilisateurManager();
 				Utilisateur utilisateur = utilisateurManager.selectionnerUtilisateurAvecId(noUtilisateur);
 				request.setAttribute("sessionUtilisateur", utilisateur);
+				request.setAttribute("valider", 1);
 			} catch (BusinessException e) {
 				e.printStackTrace();
 			}

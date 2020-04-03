@@ -50,42 +50,49 @@
 	
 
 	<div class="row">
-	<!-- Lecture de la liste d'article -->
-	<c:if test="${ !empty listArticle }">
-		<table class="table">
-			<thead class="thead-dark">
-				<tr>
-					<th scope="col">#</th>
-					<th scope="col">Nom de l'article</th>
-					<th scope="col">Prix</th>
-					<th scope="col">Date de fin d'enchere</th>
-					<th scope="col">Vendeur</th>
-				</tr>
-			</thead>
-			<tbody>
-				<c:forEach items="${ listArticle }" var="article" varStatus="index">
+			<!-- Lecture de la liste d'article -->
+		<c:if test="${ !empty listArticle }">
+			<table>
+				<thead>
 					<tr>
-						<th scope="row">${ index.index }</th>
-						<td><a href="<c:url value="/AfficherArticle"/>?id=${ article.noArticle }">${ article.nomArticle }</a></td>
+						<th colspan="2">Liste des articles a vendre</th>
+					</tr>
+				</thead>
+				<tbody>
+				<c:forEach items="${ listArticle }" var="article">
+					<tr>
 						<td>
-							<c:choose>
-								<c:when test="${ article.enchere.montantEnchere != null }">
-									${ article.enchere.montantEnchere }
-								</c:when>
-								<c:otherwise>
-									${ article.miseAPrix }
-								</c:otherwise>
-							</c:choose>
+						<div class="d-flex justify-content-md-center">
+						<div class="col-md-1 ">
+						<div class="card" style="width: 18rem;">
+  							<img src="..." class="card-img-top" alt="...">
+  								<div class="card-body">
+    								<h5 class="card-title">${ article.nomArticle }</h5>
+    									<p class="card-text">
+    									<c:choose>
+										<c:when test="${ article.enchere.montantEnchere != null }">
+											Prix actuel : ${ article.enchere.montantEnchere }<br>
+										</c:when>
+										<c:otherwise>
+											Mise a prix : ${ article.miseAPrix }<br>
+										</c:otherwise>
+										</c:choose> Fin de l'enchere : 
+										<fmt:parseDate value="${ article.dateFinEncheres }" pattern="yyyy-MM-dd'T'HH:mm" var="parsedDateTime" type="both" />
+										<fmt:formatDate pattern="dd/MM/yyyy HH:mm" value="${ parsedDateTime }" /><br>
+										Vendeur : <a href="<c:url value="/AfficherProfil"/>?id=${ article.vendeur.noUtilisateur }">${ article.vendeur.pseudo }</a>
+    									</p>
+									<a class="btn btn-dark" href="<c:url value="/AfficherArticle"/>?id=${ article.noArticle }">Détails de l'article</a>
+  								</div>
+						</div>
+						</div>
+						</div>
+						
 						</td>
-						<td>
-							<fmt:parseDate value="${ article.dateFinEncheres }" pattern="yyyy-MM-dd'T'HH:mm" var="parsedDateTime" type="both" />
-							<fmt:formatDate pattern="dd/mm/yyyy HH:mm" value="${ parsedDateTime }" />
-						<td><a href="<c:url value="/AfficherProfil"/>?id=${ article.vendeur.noUtilisateur }">${ article.vendeur.pseudo }</a></td>
 					</tr>
 				</c:forEach>
-			</tbody>
-		</table>
-	</c:if>
+				</tbody>
+			</table>
+		</c:if>
 	</div>
 	
 	<div class="row">

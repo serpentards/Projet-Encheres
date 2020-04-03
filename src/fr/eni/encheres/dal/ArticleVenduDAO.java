@@ -9,6 +9,8 @@ import fr.eni.encheres.exception.BusinessException;
 public interface ArticleVenduDAO {
 	
 	void insert(ArticleVendu article) throws BusinessException;
+	
+	ArticleVendu update(ArticleVendu articleVendu) throws BusinessException;
 
 	List<ArticleVendu> select() throws BusinessException;
 

@@ -39,6 +39,28 @@ public class ArticleVenduManager {
 		return article;
 	}
 	
+	public ArticleVendu updateArticle(int id,String nomArticle, String description, LocalDateTime dateDebutEncheres,
+			LocalDateTime dateFinEncheres, int miseAPrix, int prixVente, int etatVente, Enchere enchere,
+			Categorie categorieArticle, Retrait lieuRetrait, Utilisateur vendeur) throws BusinessException {
+
+		BusinessException be = new BusinessException();
+		// valider les champs
+		validerNom(nomArticle, be);
+		validerDescription(description, be);
+		validerDates(dateDebutEncheres, dateFinEncheres, be);
+		validerMiseAPrix(miseAPrix, be);
+
+		ArticleVendu article = null;
+		if (!be.hasErreurs()) {
+			article = new ArticleVendu(id,nomArticle, description, dateDebutEncheres, dateFinEncheres, miseAPrix,
+					prixVente, etatVente, enchere, categorieArticle, lieuRetrait, vendeur);
+			articleVenduDAO.update(article);
+		} else {
+			throw be;
+		}
+		return article;
+	}
+	
 	public List<ArticleVendu> selectionnerTousLesArticles() throws BusinessException {
 		return articleVenduDAO.select();
 	}

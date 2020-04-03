@@ -8,17 +8,14 @@
 <%@ include file="header.jsp" %>
 </head>
 <body>
-	nom : ${ article.nomArticle }<br>
-	description : ${ article.description }<br>
-	dateDebutEncheres : 
-	<fmt:parseDate value="${ article.dateDebutEncheres }" pattern="yyyy-MM-dd'T'HH:mm" var="parsedDateTime" type="date" />
-	<fmt:formatDate pattern="dd/MM/yyyy" value="${ parsedDateTime }" /><br>
-	dateFinEncheres : 
+	${ article.nomArticle }<br>
+	Description de l'article : ${ article.description }<br>
+	Date de fin de l'enchère : 
 	<fmt:parseDate value="${ article.dateFinEncheres }" pattern="yyyy-MM-dd'T'HH:mm" var="parsedDateTime" type="date" />
 	<fmt:formatDate pattern="dd/MM/yyyy" value="${ parsedDateTime }" /><br>
-	miseAPrix : ${ article.miseAPrix }<br>
-	montantEnchere : ${ article.enchere.montantEnchere }<br>
-	vendeur : ${ article.vendeur.pseudo }<br>
+	Prix de départ : ${ article.miseAPrix }<br>
+	Montant de l'enchère : ${ article.enchere.montantEnchere }<br>
+	Vendeur : <a href="<c:url value="/AfficherProfil"/>?id=${ article.vendeur.noUtilisateur }">${ article.vendeur.pseudo }</a><br>
 
 	<!-- Lecture des messages d'erreur -->
 	<c:if test="${ !empty listeCodesErreur }">

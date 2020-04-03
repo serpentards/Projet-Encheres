@@ -60,7 +60,7 @@
 			</div>
 			
 	    	<div class="row justify-content-center">
-	        	<button type="button" class="btn btn-secondary" onClick="javascript:location.href='<c:url value="/MesEncheres"/>'">Crée un compte</button>
+	        	<button type="button" class="btn btn-secondary" onClick="javascript:location.href='<c:url value="/Inscription"/>'">Crée un compte</button>
 	    	</div>
 	    </div>
     <div class="row">

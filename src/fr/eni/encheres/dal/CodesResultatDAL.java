@@ -40,7 +40,11 @@ public abstract class CodesResultatDAL {
 
 	public static final int SELECT_MES_VENTES_TERMINEES_ERREUR = 10015;
 
+	public static final int UPDATE_ARTICLE_ECHEC = 10016;
 
+	public static final int UPDATE_RETRAIT_ECHEC = 10017;
+
+	public static final int UPDATE_ARTICLE_ET_RETRAIT_ECHEC = 10018;
 
 
 
