@@ -94,10 +94,7 @@
 			</table>
 		</c:if>
 	</div>
-	
-	<div class="row">
-		© BollobArt
-	</div>
 </div>
+<%@ include file="footer.jsp" %>
 </body>
 </html>

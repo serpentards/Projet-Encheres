@@ -46,6 +46,6 @@
 		<input type="reset" value="Annuler"/>
 		<input type="button" value="Annuler la vente"/>
 	</form>
-
+<%@ include file="footer.jsp" %>
 </body>
 </html>

@@ -10,9 +10,13 @@
 <%@ include file="header.jsp" %>
 </head>
 <body>
-<h1 align="center">Mon compte</h1>
+<div class="container">
+	<div class="row justify-content-center">
+		<h1>Mon Compte</h1>
+	</div>
 	<!-- Lecture des messages d'erreur -->
 	<c:if test="${ !empty listeCodesErreur }">
+	<div class="row justify-content-center">
 		<div class="alert alert-danger" role="alert">
 			<strong>Erreur!</strong>
 			<ul>
@@ -21,6 +25,7 @@
 				</c:forEach>
 			</ul>
 		</div>
+	</div>
 	</c:if>
 	<form method="post" action="<%=request.getContextPath()%>/ModifierProfil">
 		<label for="pseudo">Pseudo : </label> 
@@ -64,7 +69,8 @@
 		<a href="<%=request.getContextPath()%>/Supprimer"> <input
 			type="button" class="btn btn-secondary" value="Supprimer compte" onclick="return confirm('Etes-vous sûr de vouloir supprimer votre compte ?')"/></a>
 	</div>
-	<p class="mt-5 mb-3 text-muted">© BollobArt</p>
 	
+</div>
+<%@ include file="footer.jsp" %>
 </body>
 </html>

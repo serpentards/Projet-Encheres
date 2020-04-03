@@ -5,6 +5,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Modifier mon article</title>
+<%@ include file="header.jsp" %>
 </head>
 <body>
 <body>
@@ -44,5 +45,6 @@
 		
 		<input type="text" name="idArticle" hidden="true" value="${ article.noArticle }">
 	</form>
+<%@ include file="footer.jsp" %>
 </body>
 </html>

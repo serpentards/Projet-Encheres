@@ -34,5 +34,6 @@
 		<input type="number" id="montantEnchere" name="montantEnchere" min="${( article.enchere.montantEnchere != null) ? article.enchere.montantEnchere + 1 : article.miseAPrix + 1 }">
 		<input type="submit" value="Encherir">
 	</form>
+<%@ include file="footer.jsp" %>
 </body>
 </html>

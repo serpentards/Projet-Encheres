@@ -57,5 +57,6 @@
 		<input type="submit" value="Créer" /> 
 		<input type="button" value="Annuler" onclick="location.href='<%=request.getContextPath()%>/Accueil'">
 	</form>
+<%@ include file="footer.jsp" %>
 </body>
 </html>

@@ -63,9 +63,8 @@
 	        	<button type="button" class="btn btn-secondary" onClick="javascript:location.href='<c:url value="/Inscription"/>'">Crée un compte</button>
 	    	</div>
 	    </div>
-    <div class="row">
-	    © BollobArt
-    </div>
 </div>
+
+<%@ include file="footer.jsp" %>
 </body>
 </html>

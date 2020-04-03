@@ -44,7 +44,7 @@
 	<div class="contenu">
 		<a href="<c:url value="/Accueil"/>" ><input type="button" value="Annuler"></a>
 	</div> 
-	<p class="mt-5 mb-3 text-muted">© BollobArt</p>
-	
+
+<%@ include file="footer.jsp" %>
 </body>
 </html>
