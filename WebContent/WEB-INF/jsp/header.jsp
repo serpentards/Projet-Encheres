@@ -10,13 +10,16 @@
 <title>Insert title here</title>
 </head>
 <body>
-<nav class="navbar navbar-light bg-light navbar-expand-lg  fixed-top">
-	<div class="container">
-	  <a class="navbar-brand" href="<%=request.getContextPath()%>/Accueil">
-	    <img src="/ENI-Encheres-1/images/logo_eni_enchere_fond_blanc.png" width="100" height="100" class="d-inline-block align-top" alt="">
-	    ENI Enchères
-	  </a>
-	  <div class="collapse navbar-collapse" id="navbarResponsive">
+<nav class="navbar navbar-light bg-light  fixed-top" > 
+	
+		  <a class="navbar-brand" href="<%=request.getContextPath()%>/Accueil">
+				<img src="/ENI-Encheres-1/images/logo_eni_enchere_fond_blanc.png" width="100" height="100" class="d-inline-block align-top" alt="">
+		    <div class="d-flex align-items-center">
+		    ENI Enchères
+		    </div>
+		  </a>
+		
+	  <div class="d-flex align-items-start flex-column bd-highlight mb-3" id="navbarResponsive">
 		  <c:choose>
 				<c:when test="${ !empty sessionUtilisateur }">
 				<p align="right">
@@ -33,14 +36,14 @@
 				</c:otherwise>
 			</c:choose>
 		</div>
-	</div>
-</nav>
-<br/>
+
+</nav> 
+<!-- <br/>
 <br/>
 <br/>
 <br/>
 <br/>
 <br/> 
-
+<br/>  -->
 </body>
 </html>

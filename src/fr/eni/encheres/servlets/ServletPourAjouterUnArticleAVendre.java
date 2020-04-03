@@ -112,7 +112,9 @@ public class ServletPourAjouterUnArticleAVendre extends HttpServlet {
         //Formatage des dates
         try
         {
-        	dateDebutEncheres = LocalDateTime.parse(request.getParameter("dateDebut"));
+        	String dateDebut = request.getParameter("dateDebut");
+        	String heureDebut = request.getParameter("heureDebut");
+        	dateDebutEncheres = LocalDateTime.parse(dateDebut+"T"+heureDebut);
         }
         catch(DateTimeParseException e)
         {
@@ -121,7 +123,9 @@ public class ServletPourAjouterUnArticleAVendre extends HttpServlet {
         }
         try
         {
-        	dateFinEncheres = LocalDateTime.parse(request.getParameter("dateFin"));
+        	String dateFin = request.getParameter("dateFin");
+        	String heureFin = request.getParameter("heureFin");
+        	dateFinEncheres = LocalDateTime.parse(dateFin+"T"+heureFin);
         }
         catch(DateTimeParseException e)
         {
