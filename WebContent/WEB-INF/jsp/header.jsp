@@ -5,7 +5,7 @@
 
 <!-- Custom styles for this template -->
 <link href="css/4-col-portfolio.css" rel="stylesheet">
-<link rel="icon" href="/ENI-Encheres/images/logo_eni_enchere_favicon.png">
+<link rel="icon" href="/Projet-Encheres/images/logo_eni_enchere_favicon.png">
 <meta charset="UTF-8">
 <title>Insert title here</title>
 </head>
@@ -13,7 +13,7 @@
 <nav class="navbar navbar-light  fixed-top" style="background-color: lightgrey"> 
 		<div class="col-sm-auto justify-content-center">
 		<a class="navbar-brand" href="<%=request.getContextPath()%>/Accueil">
-				<img src="/ENI-Encheres/images/logo_eni_enchere_fond_blanc.png" width="100" height="100" class="d-inline-block align-top" alt="">ENI Enchères
+				<img src="/Projet-Encheres/images/logo_eni_enchere_fond_blanc.png" width="100" height="100" class="d-inline-block align-top" alt="">ENI Enchères
 		  </a>
 		</div>
 		
